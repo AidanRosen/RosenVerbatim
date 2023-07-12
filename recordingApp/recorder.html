@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Verbatim</title>
+        <style type="text/css"></style>
+
+        
+    </head>
+    <body>
+        <div class="holder">
+            <div data-role="controls">
+                
+                    <button>Record</button> <!----NOT A submit by default, becomes a submit type in JS after clicking once-->
+             
+            </div>
+        </div>
+        <div data-role="recordings">
+            
+        </div>
+    </body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <script src="https://markjivko.com/dist/recorder.js"></script> <!---How does this work?-->
+    <script src="index.js"></script> <!---Make sure this actually works for importing my functions--->
+
+    <script type="text/javascript">
+
+        test("I WORK!");
+
+        jQuery(document).ready(function () {
+                var $ = jQuery; //Save jQuery for later reference 
+                var myRecorder = {
+                    objects: {
+                        context: null,
+                        stream: null,
+                        recorder: null
+                    },
+                    init: function () {
+                        if (null === myRecorder.objects.context) {
+                            myRecorder.objects.context = new (
+                                    window.AudioContext || window.webkitAudioContext
+                                    );
+                        }
+                    },
+                    start: function () {
+                        var options = {audio: true, video: false};
+                        navigator.mediaDevices.getUserMedia(options).then(function (stream) {
+                            myRecorder.objects.stream = stream;
+                            myRecorder.objects.recorder = new Recorder(
+                                    myRecorder.objects.context.createMediaStreamSource(stream),
+                                    {numChannels: 1}
+                            );
+                            myRecorder.objects.recorder.record();
+                        }).catch(function (err) {});
+                    },
+                    stop: function (listObject) {
+                        if (null !== myRecorder.objects.stream) {
+                            myRecorder.objects.stream.getAudioTracks()[0].stop();
+                        }
+                        if (null !== myRecorder.objects.recorder) {
+                            myRecorder.objects.recorder.stop();
+
+                            // Validate object
+                            if (null !== listObject
+                                    && 'object' === typeof listObject
+                                    && listObject.length > 0) {
+                                // Export the WAV file
+                                myRecorder.objects.recorder.exportWAV(function (blob) {
+
+                                    fileName =  new Date().toUTCString() + '.wav';
+
+                                    // storageRef = createStorageRef(fileName); 
+
+                                    uploadAudio(fileName, blob); //THIS is where the file gets uploaded to, calls to the API 
+
+                                    var url = (window.URL || window.webkitURL)
+                                            .createObjectURL(blob);
+
+                                    // Prepare the playback
+                                    var audioObject = $('<audio controls></audio>').attr('src', url);////This is the element I need to select when submitting . I need to attach it to an object in the form
+
+                                    // Prepare the download link
+                                    var downloadObject = $('<a>&#9660;</a>')
+                                            .attr('href', url) //Actual link to file? Yes. The URL is how you access and download the file 
+                                            .attr('download', fileName); //Title of the file 
+
+                                    // Wrap everything in a row
+                                    var holderObject = $('<div class="row"></div>')
+                                            .append(audioObject)
+                                            .append(downloadObject);
+
+                                    // Append to the list
+                                    listObject.append(holderObject);
+                                });
+                            }
+                        }
+                    }
+                };
+
+                // Prepare the recordings list
+                var listObject = $('[data-role="recordings"]');
+
+                // Prepare the record button
+                $('[data-role="controls"] > button').click(function () { //Selects all buttons with attribute data-role=controls
+                    // Initialize the recorder
+                    myRecorder.init();
+
+                    // Get the button state 
+                    var buttonState = !!$(this).attr('data-recording');
+
+                    // Toggle
+                    if (!buttonState) {
+                        $(this).attr('data-recording', 'true');
+                       
+                        myRecorder.start();
+                    } else {
+                        $(this).attr('data-recording', '');
+                       
+                        myRecorder.stop(listObject); //listObject is the blob, listObject is the div with recordings 
+                    }
+                });
+            });
+        </script>
+</html>
