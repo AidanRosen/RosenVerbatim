@@ -4,6 +4,7 @@ import { createBrowserRouter } from "react-router-dom"
 import Login from "../components/auth/Login"
 import Layout from "../components/layout"
 import DashBoard from "../components/dashboard"
+import Register from "../components/auth/Register"
 
 export const router = createBrowserRouter([
   {
@@ -13,6 +14,10 @@ export const router = createBrowserRouter([
       {
         path: "login",
         element: <Login />,
+      },
+      {
+        path: "register",
+        element: <Register />
       },
       {
         path: "protected",

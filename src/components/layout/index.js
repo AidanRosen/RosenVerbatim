@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom"
 import React, { useEffect } from "react"
-import useAuth from "../../hooks/auth"
+import { useAuth } from "../../hooks/auth"
 
 export default function Layout() {
     const location = useLocation();
