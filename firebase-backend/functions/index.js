@@ -67,8 +67,8 @@ async function sendFileUsingAsyncAwait(filePath, dest, remoteServer) {
 /**
  * Parses Form data for any file uploads using formidableMiddleWare
  * @param {*} req the request made
- * @param {*} res response object to send responses 
- * @return {Promise} A Promise that resolves with an object 
+ * @param {*} res response object to send responses
+ * @return {Promise} A Promise that resolves with an object
  * containing the parsed form fields and files.
  */
 async function parseForm(req, res) {
@@ -84,6 +84,7 @@ async function parseForm(req, res) {
   });
 }
 
+let localPath = "";
 app.post("/upload", async (req, res) => {
   // Name and id of the secret key in secret manager
   const secretName = "verbatim-ssh-key";
@@ -99,7 +100,7 @@ app.post("/upload", async (req, res) => {
   const sshConfig = {
     host: "132.249.242.149", // IP addrerss of remote server
     username: "ubuntu", // Remote Username
-    port: 22, 
+    port: 22,
     privateKey: sshKey, // Private SSH Key
   };
 
@@ -124,7 +125,7 @@ app.post("/upload", async (req, res) => {
           "/home/ubuntu/audio_recordings/", uploadedFile.name);
 
       // Get the temporary local path generated from uploading to the server
-      const localPath = uploadedFile.path;
+      localPath = uploadedFile.path;
 
       // Respond to client with parsed form data
       res.end(util.inspect({fields: fields, files: files}));
@@ -142,9 +143,9 @@ app.post("/upload", async (req, res) => {
 
         /**
          * Executes a bash script on the remote server on a ssh session.
-         * run_source.sh takes in two arguments, container, and destination 
-         * path of the file on the remote server. 
-         * 
+         * run_source.sh takes in two arguments, container, and destination
+         * path of the file on the remote server.
+         *
          * To use exec(~/run_source.sh <container name> <filePath>),
          * sources the openrc file to authenticate cloud user and then runs
          * swift upload <container name> <filePath> to upload to container.
@@ -166,18 +167,15 @@ app.post("/upload", async (req, res) => {
               });
             });
       }).on("error", (err) => {
-
         // Handles any SSH connection errors and respond to client with error
         console.error("SSH connection error:", err);
         res.status(500).write({error: "Failed to establish SSH connection"});
       }).connect(sshConfig);
     } catch (err) {
-      
       // Handles any errors during form parsing or file transferring
       console.error("Error during form parsing or SCP:", err);
       res.status(500).json({error: "Failed to process the upload"});
     } finally {
-
       // Clean up: remove tempory file on the server if it still exists
       if (localPath) {
         fs.unlinkSync(localPath);
