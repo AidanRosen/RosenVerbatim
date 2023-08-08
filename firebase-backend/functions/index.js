@@ -19,8 +19,10 @@ const Client = require("ssh2").Client;
 const {Client: SCPClient} = require("node-scp");
 const keyFile = "verbatim-d8a20-e0b367ec9888.json";
 const fs = require("fs");
+const cors = require("cors");
 
 const app = express();
+app.use(cors({origin: true}));
 const secretManagerClient = new SecretManagerServiceClient({
   keyFilename: keyFile,
 });
@@ -86,6 +88,7 @@ async function parseForm(req, res) {
 
 let localPath = "";
 app.post("/upload", async (req, res) => {
+  res.set("Access-Control-Allow-Origin", "*");
   // Name and id of the secret key in secret manager
   const secretName = "verbatim-ssh-key";
   const id = "648639423919";

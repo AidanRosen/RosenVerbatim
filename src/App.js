@@ -7,8 +7,6 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom"
 import { router } from "../src/lib/routes"
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
-
-import React, { Component }  from 'react';
 import AudioPlay from './AudioPlay.js';
 
 function App() {
@@ -58,9 +56,13 @@ function App() {
   //     fallbackElement={"fallback"}
   //   />
   // ));
+  <div>
+    <RouterProvider router={router}/>
     <div className="App">
       <AudioPlay />
     </div>
+  </div>
+  
   );
 }
 

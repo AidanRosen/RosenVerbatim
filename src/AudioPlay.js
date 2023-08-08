@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { upload } from "@testing-library/user-event/dist/upload";
 
 var a;
 const AudioPlay = () => {
@@ -35,6 +36,19 @@ const AudioPlay = () => {
                 responseType: "blob"
             }
         );
+        
+        console.log("uploading");
+        const uploadResponse = await axios.post(
+            "https://api-sl2ugsqq7a-uc.a.run.app/upload",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "boundary": `${formData._boundary}`
+                }
+            }
+        )
+        console.log(uploadResponse);
         const wav = new Blob([response.data], { type: 'audio/mp3' })
         const url = window.URL.createObjectURL(wav)
         const result = new Audio(url)
@@ -45,6 +59,25 @@ const AudioPlay = () => {
         // const audio = new Audio(url)
         // audio.load()
         // await audio.play()
+    }
+
+    const uploadFile = async () => {
+        const formData = new FormData();
+        console.log(file);
+        formData.append("file", file, "noisy.wav");
+        console.log("uploading");
+        const uploadResponse = await axios.post(
+            "https://api-sl2ugsqq7a-uc.a.run.app/upload",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "boundary": `${formData._boundary}`,
+                }
+            }
+        )
+        console.log(uploadResponse);
+        return uploadResponse;
     }
 
     const handleClick = () => {
@@ -78,7 +111,11 @@ const AudioPlay = () => {
                 </div>
                 <div>
                     {audio != null &&
-                        <button onClick={process}>Process</button>
+                        <div>
+                            <button onClick={process}>Process</button>
+                            <button onClick={uploadFile}>Upload</button>
+                        </div>
+                        
                     }
                     {enhanced != null &&
                         <button onClick={playEnhanced}>Play Enhanced Audio</button>
