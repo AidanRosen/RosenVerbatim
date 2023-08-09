@@ -9,6 +9,7 @@ import torchaudio
 from fastapi.responses import Response
 from df.enhance import enhance, init_df, load_audio, save_audio
 import speech_recognition as sr
+from starlette.middleware.cors import CORSMiddleware
 #  init_df, load_audio, save_audio
 
 app = FastAPI()
@@ -53,9 +54,23 @@ def post_process(
         audio = audio.to(torch.float32) / (1 << 15)
     return audio
 
+origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["*"]
+)
+
 @app.post("/process")
 async def postAudio(file:UploadFile = File(...)):
     print("Audio received!")
+    print(file.filename)
     model, df_state, _ = init_df()
     # audio, _ = load_audio(io.BytesIO(file), sr=df_state.sr())
     audio, samplerate = torchaudio.load(file.file)
