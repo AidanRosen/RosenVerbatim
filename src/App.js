@@ -60,10 +60,7 @@ function App() {
   // ));
   <div>
     <RouterProvider router={router}/>
-    <AudioPlayer tempurl={tempurl}/>
-    <div className="App">
-      <AudioPlay />
-    </div>
+    {/* <AudioPlayer tempurl={tempurl}/> */}
   </div>
   
   );

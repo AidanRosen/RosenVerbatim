@@ -35,19 +35,6 @@ const AudioPlay = () => {
                 responseType: "blob"
             }
         );
-        
-        console.log("uploading");
-        const uploadResponse = await axios.post(
-            "https://api-sl2ugsqq7a-uc.a.run.app/upload",
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "boundary": `${formData._boundary}`
-                }
-            }
-        )
-        console.log(uploadResponse);
         const wav = new Blob([response.data], { type: 'audio/mp3' })
         const url = window.URL.createObjectURL(wav)
         const result = new Audio(url)
