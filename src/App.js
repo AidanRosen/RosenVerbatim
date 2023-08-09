@@ -8,6 +8,7 @@ import { router } from "../src/lib/routes"
 import ReactDOM from 'react-dom';
 import { createRoot } from 'react-dom/client';
 import AudioPlay from './AudioPlay.js';
+import AudioPlayer from './components/audioPlayer/audioPlayer';
 
 function App() {
   const [data, setData] = useState();
@@ -32,6 +33,7 @@ function App() {
   //     element: "This is the root"
   //   }
   // ]);
+  const tempurl = "https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/noisy.wav?temp_url_sig=2c0b129e364b8548f1ae3f0cea0e60852f4ddca0f23cee50d56c8129e59aa5b9&temp_url_expires=1691555368"
   return (
   //   <div className="App">
   //     <header className="App-header">
@@ -58,6 +60,7 @@ function App() {
   // ));
   <div>
     <RouterProvider router={router}/>
+    <AudioPlayer tempurl={tempurl}/>
     <div className="App">
       <AudioPlay />
     </div>
