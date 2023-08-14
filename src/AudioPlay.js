@@ -84,25 +84,6 @@ const AudioPlay = () => {
         return response;
     }
 
-    const uploadFile = async () => {
-        const formData = new FormData();
-        console.log(file);
-        formData.append("file", file, "noisy.wav");
-        console.log("uploading");
-        const uploadResponse = await axios.post(
-            "https://api-sl2ugsqq7a-uc.a.run.app/upload",
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                    "boundary": `${formData._boundary}`,
-                }
-            }
-        )
-        console.log(uploadResponse);
-        return uploadResponse;
-    }
-
     const handleClick = () => {
         if (buttonName === "Play") {
             a.play();
@@ -136,11 +117,7 @@ const AudioPlay = () => {
                 </div>
                 <div>
                     {audio != null &&
-                        <div>
-                            <button onClick={process}>Process</button>
-                            <button onClick={uploadFile}>Upload</button>
-                        </div>
-                        
+                        <button onClick={process}>Process</button>
                     }
                     {enhanced != null &&
                         <button onClick={playEnhanced}>Play Enhanced Audio</button>
