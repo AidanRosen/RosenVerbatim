@@ -80,8 +80,8 @@ const AudioManager = () => {
 
         // Process the audio here.
         console.log(audioBuffer);
-        setAudio(URL.createObjectURL(audioBuffer))
         const audioFile = new File([audioBuffer], "file.wav", { type: "audio/wav" })
+        setAudio(URL.createObjectURL(audioFile));
         setFile(audioFile);
         setRecording(false);
     }
