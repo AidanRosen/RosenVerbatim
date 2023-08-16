@@ -1,5 +1,8 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect, useRef } from "react";
+import { process } from "../utilities/process";
+import RecorderJS from 'recorder-js';
+import { exportBuffer } from '../utilities/preprocess';
+import { getAudioStream } from '../utilities/permissions';
 
 
 var a;
@@ -12,6 +15,19 @@ const AudioManager = () => {
 
     const [enhanced, setEnhanced] = useState();
 
+    const [stream, setStream] = useState();
+
+    const [recording, setRecording] = useState(false);
+
+    const [recorder, setRecorder] = useState();
+
+    const [browserSampleRate, setBrowserSampleRate] = useState(48000);
+
+    const [processing, setProcessing] = useState(false);
+
+    const [transcript, setTranscript] = useState();
+
+    const isFirstRender = useRef(true)
 
     useEffect(() => {
         if (a) {
@@ -26,26 +42,60 @@ const AudioManager = () => {
                 setButtonName("Play");
             };
         }
-    }, [audio]);
 
-
-
-    const process = async () => {
-        const formData = new FormData();
-        console.log(file);
-        formData.append("file", file, "noisy.wav");
-        const response = await axios.post(
-            "http://localhost:8000/process",
-            formData,
-            {
-                responseType: "blob"
+        if (isFirstRender.current) {
+            try {
+                const getStream = async () => {
+                    const audioStream = await getAudioStream();
+                    setStream(audioStream);
+                }
+                getStream();
+            } catch (error) {
+                console.log(error);
             }
-        );
-        const wav = new Blob([response.data], { type: 'audio/wav' })
-        const url = window.URL.createObjectURL(wav)
-        const result = new Audio(url)
+            isFirstRender.current = false
+            return;
+        }
+
+        if (recording) {
+            recorder.start();
+        }
+
+    }, [audio, recorder, recording]);
+
+    const startRecord = () => {
+        const audioContext = new window.AudioContext();
+        console.log(audioContext.sampleRate);
+        setBrowserSampleRate(audioContext.sampleRate);
+        const recorderInstance = new RecorderJS(audioContext);
+        recorderInstance.init(stream);
+
+        setRecording(true);
+        setRecorder(recorderInstance);
+    }
+
+    const stopRecord = async () => {
+        const { buffer } = await recorder.stop()
+        const audioBuffer = exportBuffer(buffer[0], browserSampleRate);
+
+        // Process the audio here.
+        console.log(audioBuffer);
+        setAudio(URL.createObjectURL(audioBuffer))
+        const audioFile = new File([audioBuffer], "file.wav", { type: "audio/wav" })
+        setFile(audioFile);
+        setRecording(false);
+    }
+
+    const processFile = async () => {
+        setProcessing(true);
+        console.log(file);
+        const response = await process(file);
+        const wav = new Blob([response.data], { type: 'audio/wav' });
+        const url = window.URL.createObjectURL(wav);
+        const result = new Audio(url);
         setEnhanced(result);
-        return response;
+        setTranscript(response.headers.transcript);
+        setProcessing(false);
     }
 
     const handleClick = () => {
@@ -67,27 +117,37 @@ const AudioManager = () => {
         if (e.target.files[0]) {
             console.log(e.target.files[0]);
             setFile(e.target.files[0]);
-            console.log(typeof (e.target.files[0]));
             setAudio(URL.createObjectURL(e.target.files[0]));
         }
     };
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '20vh' }}>
                 <div>
-                    <button onClick={handleClick}>{buttonName}</button>
-                    <input type="file" onChange={addFile} />
+                    <button disabled={recording || !audio} onClick={handleClick}>{buttonName}</button>
+                    <input disabled={recording} type="file" onChange={addFile} />
+                </div>
+                <div>
+                    <button
+                        onClick={() => {
+                            recording ? stopRecord() : startRecord();
+                        }}
+                    >
+                        {recording ? 'Stop Recording' : 'Start Recording'}
+                    </button>
                 </div>
                 <div>
                     {audio != null &&
-                        <button onClick={process}>Process</button>
+                        <button disabled={processing} onClick={processFile}>Process</button>
                     }
                     {enhanced != null &&
                         <button onClick={playEnhanced}>Play Enhanced Audio</button>
                     }
                 </div>
             </div>
+            {transcript != null &&
+                <p> Transcript: {transcript} </p>}
         </div>
     );
 };

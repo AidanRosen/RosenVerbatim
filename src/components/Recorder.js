@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import RecorderJS from 'recorder-js';
 import axios from "axios";
 
-import { getAudioStream, exportBuffer } from '../utilities/audio';
+import { exportBuffer } from '../utilities/preprocess';
+import { getAudioStream } from '../utilities/permissions';
 
+let browserSampleRate = 48000;
 const Recorder = () => {
 
     const [stream, setStream] = useState();
@@ -18,7 +20,9 @@ const Recorder = () => {
             try {
                 const getStream = async () => {
                     const audioStream = await getAudioStream();
-                    console.log(audioStream.getAudioTracks()[0].getSettings().sampleRate);
+                    console.log(audioStream.getAudioTracks()[0])
+                    browserSampleRate = audioStream.getAudioTracks()[0].getSettings().sampleRate;
+                    console.log(browserSampleRate);
                     setStream(audioStream);
                 }
                 getStream();
@@ -32,7 +36,7 @@ const Recorder = () => {
             recorder.start();
         }
 
-    }, [recorder])
+    }, [recorder, recording])
 
 
 
@@ -48,7 +52,7 @@ const Recorder = () => {
 
     const stopRecord = async () => {
         const { buffer } = await recorder.stop()
-        const audio = exportBuffer(buffer[0]);
+        const audio = exportBuffer(buffer[0], browserSampleRate);
 
         // Process the audio here.
         console.log(audio);
