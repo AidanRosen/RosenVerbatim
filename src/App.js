@@ -33,7 +33,7 @@ function App() {
   //     element: "This is the root"
   //   }
   // ]);
-  const tempurl = "https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/noisy.wav?temp_url_sig=2c0b129e364b8548f1ae3f0cea0e60852f4ddca0f23cee50d56c8129e59aa5b9&temp_url_expires=1691555368"
+  const tempurl = "https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/noisy.wav?temp_url_sig=33cc053ea525af58b8697def14098413b89c62991196d00423f12735af64a28f&temp_url_expires=1691783546"
   return (
   //   <div className="App">
   //     <header className="App-header">
@@ -60,7 +60,8 @@ function App() {
   // ));
   <div>
     <RouterProvider router={router}/>
-    {/* <AudioPlayer tempurl={tempurl}/> */}
+    <AudioPlayer tempurl={tempurl}/>
+    {/* <AudioPlay/> */}
   </div>
   
   );

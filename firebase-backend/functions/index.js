@@ -52,12 +52,19 @@ async function getSecret(pathToKey) {
 /**
  * Sends file in the express backend to the cloud instance through scp
  * @param {*} filePath the temporary file path in the express backend
- * @param {*} dest the destination location to send the file to in the instance
+ * @param {*} desPath the destination location to send the file to
+ * in the instance
+ * @param {*} file The name of the file
  * @param {*} remoteServer the config for the remote server to log in
  */
-async function sendFileUsingAsyncAwait(filePath, dest, remoteServer) {
+async function sendFileUsingAsyncAwait(filePath, desPath, file, remoteServer) {
   try {
     const c = await new SCPClient(remoteServer);
+    const result = await c.exists(desPath);
+    const dest = path.join(desPath, file);
+    if (!result) {
+      await c.mkdir(desPath);
+    }
     await c.uploadFile(filePath, dest);
     console.log("file sent");
     c.close();
@@ -87,8 +94,10 @@ async function parseForm(req, res) {
 }
 
 let localPath = "";
-app.post("/upload", async (req, res) => {
+app.post("/upload/:uid", async (req, res) => {
   res.set("Access-Control-Allow-Origin", "*");
+
+  const {uid} = req.params;
   // Name and id of the secret key in secret manager
   const secretName = "verbatim-ssh-key";
   const id = "648639423919";
@@ -108,7 +117,7 @@ app.post("/upload", async (req, res) => {
   };
 
   // Checks if the API endpoint is a POST request to upload
-  if (req.url == "/upload" && req.method.toLowerCase() == "post") {
+  if (req.url.includes("/upload") && req.method.toLowerCase() == "post") {
     try {
       // Parse the form data from the request using the 'parseForm' function.
       const {fields, files} = await parseForm(req);
@@ -124,8 +133,7 @@ app.post("/upload", async (req, res) => {
       }
 
       // Create destination path on the remote server, append with file name
-      const destinationPath = path.join(
-          "/home/ubuntu/audio_recordings/", uploadedFile.name);
+      const destinationPath = `/home/ubuntu/audio_recordings/${uid}`;
 
       // Get the temporary local path generated from uploading to the server
       localPath = uploadedFile.path;
@@ -135,7 +143,9 @@ app.post("/upload", async (req, res) => {
 
       // Transfer the file using SCP to the remote server
       // using the 'sendFileUsingAsyncAwait' function.
-      await sendFileUsingAsyncAwait(localPath, destinationPath, sshConfig);
+      await sendFileUsingAsyncAwait(localPath, destinationPath,
+          uploadedFile.name,
+          sshConfig);
 
       // Create new ssh client
       const sshClient = new Client();
