@@ -1,0 +1,3 @@
+[submodule "Speech-Editing-Toolkit"]
+	path = Speech-Editing-Toolkit
+	url = https://github.com/Zain-Jiang/Speech-Editing-Toolkit.git
