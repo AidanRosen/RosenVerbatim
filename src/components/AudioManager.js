@@ -3,6 +3,7 @@ import { process } from "../utilities/process";
 import RecorderJS from 'recorder-js';
 import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
+import { Link } from 'react-router-dom';
 
 
 var a;
@@ -148,6 +149,9 @@ const AudioManager = () => {
             </div>
             {transcript != null &&
                 <p> Transcript: {transcript} </p>}
+            <Link to="/protected/history">
+                <button>Navigate to history</button>
+            </Link>
         </div>
     );
 };

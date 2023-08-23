@@ -209,6 +209,49 @@ app.post("/upload/:uid", async (req, res) => {
   );
 });
 
+app.get("/getFiles/:uid", async (req, res) => {
+  console.log("requested to get files");
+  res.set("Access-Control-Allow-Origin", "*");
+
+  const {uid} = req.params;
+  // Name and id of the secret key in secret manager
+  const secretName = "verbatim-ssh-key";
+  const id = "648639423919";
+  // Create the path to retrieve the SSH key from Google secret manager.
+  const pathToKey = `projects/${id}/secrets/${secretName}/versions/latest`;
+
+  // Retrieve SSH private key from secret manager using 'getSecret' function.
+  const sshKey = await getSecret(pathToKey);
+
+  // Set up the SSH configuration object for connecting to the remote server.
+  const sshConfig = {
+    host: "132.249.242.149", // IP addrerss of remote server
+    username: "ubuntu", // Remote Username
+    port: 22,
+    privateKey: sshKey, // Private SSH Key
+  };
+
+  const sshClient = new Client();
+
+  sshClient.on("ready", () => {
+    console.log("SSH Connection established...");
+    sshClient.exec(`~/get_file.sh ${uid}`, (err, stream) =>{
+      if (err) throw err;
+
+      let tempUrls = [];
+
+      stream.on("data", (data) => {
+        const urls = data.toString().trim().split("\n");
+        tempUrls = tempUrls.concat(urls);
+      }).on("end", () => {
+        sshClient.end();
+        console.log(tempUrls);
+        res.json(tempUrls);
+      });
+    });
+  }).connect(sshConfig);
+});
+
 exports.helloWorld = onRequest((request, response) => {
   logger.info("Hello logs!", {structuredData: true});
   response.send("Hello from Firebase!");
