@@ -5,7 +5,7 @@ const process = async (file) => {
     formData.append("file", file, "noisy.wav");
     console.log(file);
     const response = await axios.post(
-        "http://132.249.242.199:8000/process",
+        "https://api.verbatim.site/process",
         formData,
         {
             responseType: "blob"
