@@ -1,0 +1,105 @@
+.centerimage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+
+  }
+
+  .logo {
+    /* display: block;
+    margin-left: auto;
+    margin-right: auto; */
+    width: 20%;
+
+  }
+
+
+  .logo > a > img {
+    width: 16rem;
+    max-width: 100%;
+    height: auto;
+    width: auto\9; /* ie8 */
+
+   min-width: 25%;
+
+ }
+
+
+.formContainer {
+  margin-left: auto;
+  margin-right: auto;
+  width: 20rem;
+
+}
+
+
+ .formfields {
+  margin-left: auto;
+  margin-right: auto;
+  
+  display: flex;
+  /* justify-content: center;
+  align-items: center; */
+  width: 100%;
+
+  padding-top: .5rem;
+  margin-left: 1rem;
+
+ }
+
+ .formfields > div > div > label {
+
+    font-size: .6rem;
+
+    padding-right: 1rem;
+    margin-bottom: -1rem;
+    color: #666666;
+ }
+
+ .formfields > div >  input {
+  display: block;
+  font-size: .7rem;
+  width: 18rem;
+  /* padding: 2px; */
+
+  padding-top: 2px;
+  padding-left: 2px;
+  color: black !important;
+
+
+
+}
+
+
+.continue_btn {
+  display: block;
+  background-color: #7600dd;
+  color: white;
+  font-size: .6rem;
+  border: none;
+  padding: 7px; 
+
+  margin-top: .6rem;
+  width: 18rem;
+
+}
+
+
+.formfields > .loginlink  {
+
+    color: #666666;
+    font-size: .6rem;
+    display: flex;
+  
+    margin-left: auto;
+    margin-right: auto;
+    justify-content: center;
+    align-items: center;
+
+    padding-right: 2rem;
+    
+
+}
+
+
