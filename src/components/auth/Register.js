@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { auth, app } from "../../lib/firebase";
 import { createUserWithEmailAndPassword} from "firebase/auth";
-import { useCreateUserWithEmailAndPassword } from "react-firebase-hooks/auth"
+import { doc, setDoc, collection } from "firebase/firestore";
+import { db } from "../../lib/firebase";
+
 
 export default function Register() {
-    const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const [username, setUsername] = useState("");
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -23,6 +26,12 @@ export default function Register() {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("User registered:", userCredential.user);
+      console.log(userCredential.user);
+      const userDocRef = doc(db, "users", userCredential.user.uid);
+      await setDoc(userDocRef, {
+        email: userCredential.user.email,
+        username: username,
+      })
       // Optionally, you can redirect the user to a different page after successful registration.
     } catch (error) {
       setError(error.message);
@@ -33,6 +42,15 @@ export default function Register() {
     <div>
       <h2>Register</h2>
       <form onSubmit={handleRegister}>
+        <div>
+          <input
+            type="text"
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            required
+          />
+        </div>
         <div>
           <label>Email:</label>
           <input

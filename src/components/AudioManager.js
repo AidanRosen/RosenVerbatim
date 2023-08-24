@@ -4,6 +4,10 @@ import RecorderJS from 'recorder-js';
 import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
 import { Link } from 'react-router-dom';
+import axios from "axios";
+import { useAuth } from "../hooks/auth";
+import { doc, addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 
 var a;
@@ -28,7 +32,11 @@ const AudioManager = () => {
 
     const [transcript, setTranscript] = useState();
 
-    const isFirstRender = useRef(true)
+    const [enhancedFile, setEnhancedFile] = useState();
+
+    const isFirstRender = useRef(true);
+
+    const { user, isLoading } = useAuth();
 
     useEffect(() => {
         if (a) {
@@ -94,9 +102,15 @@ const AudioManager = () => {
         const wav = new Blob([response.data], { type: 'audio/wav' });
         const url = window.URL.createObjectURL(wav);
         const result = new Audio(url);
+        const name = file.name.substring(0, file.name.lastIndexOf(".")) + "_processed";
+        const extension = file.name.substring(file.name.lastIndexOf("."), file.name.length);
+        const efName = name + extension;
+        console.log(efName);
+        const ef = new File([wav], efName, { type: 'audio/wav' });
         setEnhanced(result);
         setTranscript(response.headers.transcript);
         setProcessing(false);
+        setEnhancedFile(ef);
     }
 
     const handleClick = () => {
@@ -112,8 +126,6 @@ const AudioManager = () => {
         enhanced.play();
     };
 
-
-
     const addFile = (e) => {
         if (e.target.files[0]) {
             console.log(e.target.files[0]);
@@ -121,6 +133,46 @@ const AudioManager = () => {
             setAudio(URL.createObjectURL(e.target.files[0]));
         }
     };
+
+    const upload = async () => {
+        const formDataOriginal = new FormData();
+        const formDataEnhanced = new FormData();
+        const timestamp = serverTimestamp();
+        formDataOriginal.append("file", file, file.name);
+        formDataEnhanced.append("file", enhancedFile, enhancedFile.name);
+        console.log("uploading");
+        console.log(`https://api-sl2ugsqq7a-uc.a.run.app/upload/${user.uid}`)
+        const uploadResponse = await axios.post(
+            `https://api-sl2ugsqq7a-uc.a.run.app/upload/${user.uid}`,
+            formDataOriginal,   
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "boundary": `${formDataOriginal._boundary}`,
+                }
+            }
+        )
+
+        const enhancedUploadResponse = await axios.post(
+            `https://api-sl2ugsqq7a-uc.a.run.app/upload/${user.uid}`,
+            formDataEnhanced,   
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                    "boundary": `${formDataEnhanced._boundary}`,
+                }
+            }
+        )
+        console.log(uploadResponse);
+        const docRef = await addDoc(collection(db, "recordings"), {
+            uid: user.uid,
+            fileName: file.name,
+            enhancedFileName: enhancedFile.name,
+            timeAdded: timestamp
+
+        })
+        return [uploadResponse, enhancedUploadResponse];
+    }
 
     return (
         <div>
@@ -143,7 +195,10 @@ const AudioManager = () => {
                         <button disabled={processing} onClick={processFile}>Process</button>
                     }
                     {enhanced != null &&
+                    <div>
                         <button onClick={playEnhanced}>Play Enhanced Audio</button>
+                        <button onClick={upload}>Backup</button>
+                    </div>
                     }
                 </div>
             </div>
