@@ -12,8 +12,9 @@ export default function AudioPlayer() {
         async function fetchTempUrls() {
         try {
             const prefix = 'https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/';
+            const processedEnding = "_processed.mp3";
             const response = await axios.get(`https://api-sl2ugsqq7a-uc.a.run.app/getFiles/${user.uid}`);
-            const filteredUrls = response.data.filter((url) => url.startsWith(prefix));
+            const filteredUrls = response.data.filter((url) => url.startsWith(prefix) && url.includes(processedEnding));
             setTempUrls(filteredUrls);
         } catch (error) {
             console.error('Error fetching temp URLs:', error);
