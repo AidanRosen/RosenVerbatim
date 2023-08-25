@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './History.css';
 import axios from 'axios';
 import { useAuth } from '../hooks/auth';
+import { collection, query, where, getDocs } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 const HistoryTab = () => {
   const [audioPlaying, setAudioPlaying] = useState(null);
@@ -13,8 +15,8 @@ const HistoryTab = () => {
   ]);
 
   const [files, setFiles] = useState([
-    { id: 1, folderId: 1, name: 'File 1.wav' },
-    { id: 2, folderId: 2, name: 'File 2.wav' },
+    { id: 1, folderId: 1, name: 'File 1.wav', fileUrl: null },
+    { id: 2, folderId: 2, name: 'File 2.wav', fileUrl: null },
   ]);
 
   const [selectedFolders, setSelectedFolders] = useState([]);
@@ -124,6 +126,7 @@ const HistoryTab = () => {
   };
 
   const handlePlayAudio = (file) => {
+    console.log(file)
     if (audioPlaying === file.id) {
       // If the audio is already playing, stop it
       setAudioPlaying(null);
@@ -143,8 +146,36 @@ const HistoryTab = () => {
         const processedEnding = "_processed.mp3";
         const response = await axios.get(`https://api-sl2ugsqq7a-uc.a.run.app/getFiles/${user.uid}`);
         const filteredUrls = response.data.filter((url) => url.startsWith(prefix) && url.includes(processedEnding));
-        const files = filteredUrls.map(url => url.replace(prefix + user.uid, ''));
-        console.log(filteredUrls);
+
+        const documentIds = {};
+        const recordingsRef = collection(db, "recordings");
+        const q = query(recordingsRef, where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+
+        if (!querySnapshot.empty) {
+          querySnapshot.forEach((doc) => {
+            console.log(doc.data())
+            documentIds[doc.data().enhancedFileName] = doc.id;
+          })
+        }
+
+        const names = Object.keys(documentIds);
+        const fileNameToUrlMap = {};
+        for (const url of filteredUrls) {
+          const truncated = url.replace(prefix + user.uid + "/", "")
+          const fileName = truncated.substring(0, truncated.indexOf("?temp_url"));
+          fileNameToUrlMap[fileName] = url;
+        }
+        console.log(fileNameToUrlMap)
+        console.log(names)
+        const files = names.map((name) => {
+          return {
+            id: documentIds[name],
+            folderId: null,
+            name: name,
+            url: fileNameToUrlMap[name]
+          }
+        });
         setTempUrls(filteredUrls);
         setFiles(files);
       } catch (error) {
