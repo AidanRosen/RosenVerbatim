@@ -1,0 +1,240 @@
+.song {
+	/* padding-top: 30px; */
+    padding-top: 3rem;
+	padding-bottom: 1.5rem;
+
+    align-content: center;
+	
+}
+
+.column {
+  float: left;
+  width: 50%;
+  
+  font-size: 2rem;
+  padding-bottom: 40px;
+    /* Center horizontally*/
+    margin: 0 auto;
+  
+}
+
+.columnbackground {
+  /* background-color:#aaa; */
+
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+
+h3 {
+
+  font-size: 1.7rem;
+
+}
+
+.togglestyle 
+{
+  font-size: 2rem;
+  margin: 0 auto;
+
+}
+
+
+@media screen and (min-width: 600px) {
+  * {
+    box-sizing: border-box;
+  }
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+
+  padding-left: 2rem;
+    /* Center horizontally*/
+    margin: 0 auto;
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.child {
+
+  font-size: 3rem;
+  padding-bottom: 1rem;
+
+ /* Center horizontally*/
+ 
+}
+
+  
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
+  }
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.child {
+
+  font-size: 2rem;
+  padding-bottom: .3rem;
+  text-align: left;
+ /* Center horizontally*/
+ 
+}
+
+
+
+}
+
+
+
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+  
+  padding-bottom: 80px;
+  
+}
+
+
+
+.container {
+    font-family: arial;
+    /* font-size: 24px; */
+    font-size: 2rem;
+    /* margin: 25px; */
+    /* width: 350px; */
+    /* height: 200px; */
+    /* outline: dashed 1px black; */
+  }
+  
+  .child {
+    width: 100%;
+    /* height: 50px; */
+    /* background-color: red; */
+    /* Center horizontally*/
+    /* margin: 0 auto; */
+    margin: auto auto;
+    align-content: center;
+  }
+
+  .centerimage {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 40%;
+
+  }
+
+  .centerimage > img {
+     width: 40rem;
+     max-width: 100%;
+     height: auto;
+     width: auto\9; /* ie8 */
+
+    min-width: 60%;
+    padding-top: 2rem
+
+  }
+
+
+  .centerMessage {
+    /* display: block; */
+    margin-left: auto;
+    margin-right: auto;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+
+
+
+  .faketab {
+    display: flex;
+    /* position: absolute; */
+
+  }
+
+  .faketab > div {
+    width: 50%;
+    /* height: 60px; */
+    /* font-size:18px; */
+    /* border: 2px solid #b2b2b2;
+    background-color: #f8f8f8; */
+    color: #4d4d4d;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding-top: 4rem;
+
+  }
+
+  .faketableft {
+    /* padding-left: 200px; */
+    padding-left: 10rem;
+    padding-right: 20px
+  }
+
+  .faketabright {
+    /* padding-right: 200px; */
+    padding-right: 10rem;
+    padding-left: 20px;
+  }
+
+  .signup_btn, .login_btn {
+    font-size: 1.6rem;
+    color: white;
+
+    background-color: #7600dd;
+    cursor:pointer;
+    padding: 1rem;
+    border: none;
+
+  }
+
+
+  .buttonrow {
+     margin-left: 13%;
+     margin-right: 13%;
+
+
+  }

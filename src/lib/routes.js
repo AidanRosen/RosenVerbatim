@@ -1,16 +1,26 @@
-import React from "react"
-
-import { createBrowserRouter } from "react-router-dom"
-import Login from "../components/auth/Login"
-import Layout from "../components/layout"
-import DashBoard from "../components/dashboard"
-import Register from "../components/auth/Register"
-import AudioPlayer from "../components/history/audioPlayer"
+import logo from '../logo.svg';
+import '../App.css';
+import React, { Component }  from 'react';
+// import AudioPlay from './AudioPlay.js';
+// import AudioPlayer from './components/audioPlayer/audioPlayer';
+import { createBrowserRouter, } from "react-router-dom"
+import Navbar from '../components/Navbar';
+import { BrowserRouter as Router, Routes, Route, Navigate }
+	from 'react-router-dom';
+import Home from '../pages';
+import AudioPlay from '../AudioPlay';
+import AudioManager from '../components/AudioManager';
+import Forgotpassword from '../pages/forgotpassword';
+import Homepage from '../pages/homepage';
+import Login from '../components/auth/login';
+import Register from '../components/auth/register';
+import History from '../pages/History';
+import Layout from '../components/layout';
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Layout/>,
+    element: <Navbar/>,
     children: [
       {
         path: "login",
@@ -21,23 +31,32 @@ export const router = createBrowserRouter([
         element: <Register />
       },
       {
+        path: "forgotpassword",
+        element: <Forgotpassword/>
+      },
+      {
+        index: true,
+        path: "home",
+        element: <Home/>
+      },
+      {
+        path: '/', // This is the default route path
+        element: <Navigate to="/home" />, // Redirect to the "home" route
+      },
+      {
         path: "protected",
-        element: <Layout />,
+        element: <Navbar />,
         children: [
             {
-              path: "dashboard",
-              element: <DashBoard />
+                path: "audiomanager",
+                element: <AudioManager />
             },
             {
-              path: "history",
-              element: <AudioPlayer tempurl={"https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/UXTHsfANwDZYr6B5ESE5nJ6cZp83/lincoln_gettysburg_address.8eaab0b6-1272-4b9a-832b-9ff92957f4f3.mp3?temp_url_sig=3ebfa4dd9f2737bb5c09e54211f185c68de6dac66464e5ac7c0fb7fea09c888e&temp_url_expires=1692694616"}/>
+                path: "history",
+                element: <History/>
             }
         ]
       },
     ],
-  },
-  {
-    path: "/test",
-    element: "test1"
   }
 ])

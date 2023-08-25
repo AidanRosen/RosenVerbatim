@@ -1,114 +1,357 @@
 .record-container {
-    position: absolute;
-    top: 50%;
-    right: 5%;
-    transform: translateY(-50%);
-    text-align: center;
-  }
+  position: absolute;
+  top: 40%;
+  right: 5%;
+  transform: translateY(-50%);
+  text-align: center;
+}
+
+.record-button {
+  position: relative;
+  /* width: 160px; */ /* Scaled by 250% */
+  /* height: 160px; */ /* Scaled by 250% */
   
-  .record-button {
-    position: relative;
-    width: 250px; /* Scaled by 250% */
-    height: 250px; /* Scaled by 250% */
-    background-color: #d4a5ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-bottom: 50px; /* Scaled by 250% */
-  }
+  width: 10.5rem;
+  height: 10.5rem;
   
-  .record-button-inner {
-    width: 150px; /* Scaled by 250% */
-    height: 150px; /* Scaled by 250% */
-    background-color: #9747ff;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+  background-color: #d4a5ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin-bottom: 50px; /* Scaled by 250% */
+  /* margin: auto; */
+  margin-left: 4rem;
+}
+
+.record-button-inner {
+  width: 120px; /* Scaled by 250% */
+  height: 120px; /* Scaled by 250% */
+  background-color: #9747ff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-button {
+  background-color: #d4a5ff;
+  padding: 6px 10px; /* Scaled by 250% */
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  /* font-size: 40px; */ /* Scaled by 250% */ 
+  font-size: 2.5rem;
   
-  .upload-button {
-    background-color: #d4a5ff;
-    padding: 25px 50px; /* Scaled by 250% */
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 40px; /* Scaled by 250% */
-  }
+  width: 30%;
+  margin: auto;
   
-  .toggle-switch-container {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translateY(-50%);
-  }
+  margin-top: 20px;  
   
-  .toggle-switch {
-    display: flex;
-    align-items: center;
-    margin-bottom: 25px; /* Scaled by 250% */
-  }
+}
+
+.toggle-switch-container {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px; /* Scaled by 250% */
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px; /* Scaled by 250% */
+  height: 50px; /* Scaled by 250% */
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 25px; /* Scaled by 250% */
+  cursor: pointer;
+  transition: 1s; /* Scaled by 250% */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 40px; /* Scaled by 250% */
+  width: 40px; /* Scaled by 250% */
+  left: 5px; /* Scaled by 250% */
+  bottom: 5px; /* Scaled by 250% */
+  background-color: white;
+  border-radius: 50%;
+  transition: 1s; /* Scaled by 250% */
+}
+
+.switch input:checked + .slider {
+  background-color: #9747ff;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(50px); /* Scaled by 250% */
+}
+
+.toggle-label {
+  margin-left: 25px; /* Scaled by 250% */
+  font-size: 45px; /* Scaled by 250% */
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+}
+
+/* Additional style for the processing state of the slider */
+.slider.processing {
+  background-color: #ccc; /* Adjust the color to grey out the slider */
+  cursor: not-allowed; /* Prevent clicking while processing */
+}
+
+/* ... (other styles) */
+
+
+.song {
+	/* padding-top: 30px; */
+  padding-top: 3rem;
+	padding-bottom: 1.5rem;
+	
+}
+
+.column {
+  float: left;
+  width: 50%;
   
-  .switch {
-    position: relative;
-    display: inline-block;
-    width: 100px; /* Scaled by 250% */
-    height: 50px; /* Scaled by 250% */
-  }
+  font-size: 2rem;
+  padding-bottom: 40px;
   
-  .switch input {
-    display: none;
+}
+
+.columnbackground {
+  /* background-color:#aaa; */
+
+}
+
+/* * {
+  box-sizing: border-box;
+} */
+
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+
+h3 {
+
+  font-size: 1.7rem;
+
+}
+
+.togglestyle 
+{
+  font-size: 2rem;
+  margin: 0 auto;
+
+}
+
+
+@media screen and (min-width: 600px) {
+  * {
+    box-sizing: border-box;
   }
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+
+  padding-left: 2rem;
+
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.child {
+
+  font-size: 3rem;
+  padding-bottom: 1rem;
+
+ /* Center horizontally*/
+ 
+}
+
   
-  .slider {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 25px; /* Scaled by 250% */
-    cursor: pointer;
-    transition: 1s; /* Scaled by 250% */
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .column {
+    width: 100%;
   }
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 100%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.child {
+
+  font-size: 2rem;
+  padding-bottom: .3rem;
+  text-align: left;
+ /* Center horizontally*/
+ 
+}
+
+
+
+}
+
+
+
+
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
   
-  .slider:before {
-    position: absolute;
-    content: "";
-    height: 40px; /* Scaled by 250% */
-    width: 40px; /* Scaled by 250% */
-    left: 5px; /* Scaled by 250% */
-    bottom: 5px; /* Scaled by 250% */
-    background-color: white;
-    border-radius: 50%;
-    transition: 1s; /* Scaled by 250% */
-  }
+  padding-bottom: 80px;
   
-  .switch input:checked + .slider {
-    background-color: #9747ff;
-  }
-  
-  .switch input:checked + .slider:before {
-    transform: translateX(50px); /* Scaled by 250% */
-  }
-  
-  .toggle-label {
-    margin-left: 25px; /* Scaled by 250% */
-    font-size: 45px; /* Scaled by 250% */
-  }
-  
-  .switch {
-    display: flex;
-    align-items: center;
-  }
-  
-  /* Additional style for the processing state of the slider */
-  .slider.processing {
-    background-color: #ccc; /* Adjust the color to grey out the slider */
-    cursor: not-allowed; /* Prevent clicking while processing */
-  }
-  
-  /* ... (other styles) */
+}
+
+.filename {
+	font-size: 1rem;
+	
+	padding-top: 1.2rem;
+	
+}
+
+.filelabel {
+	font-size: 1rem;
+	
+	padding-top: 1.2rem;
+	
+}
+
+
+.child {
+
+   font-size: 2rem;
+   text-align: left;
+
+  /* Center horizontally*/
+  /* margin: 0 auto; */
+}
+
+
+.record-button2 {
+  background-image: url("Just-Press-Record-button.png");
+  background-color: white;
+  background-size: 80%;
+  height: 360px;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 50%;
+}
+
+
+.RecordButtonNew{
+  padding: 0px;
+  margin-top: -10px;
+}
+
+
+.ORStyle {
+  margin-top: .5rem;
+  margin-bottom: 1rem;
+
+padding-left: 8rem;
+
+
+}
+
+.record_btn {
+  border: none;
+  cursor:pointer;
+  background-color: white;
+}
+
+.upload_btn {
+  border: none;
+  cursor:pointer;
+  background-color: white;
+}
+
+.AppToolTip {
+  font-family: sans-serif;
+  text-align: center;
+
+  margin-top: 100px;
+  height: 200px;
+}
+
+
+div.RecordButtonNew.record_btn span {
+  display: none;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #333;
+  color: #fff;
+}
+
+div.RecordButtonNew.record_btn:hover span {
+  display: block;
+}
+
+.supportmessage {
+  font-size: 1rem;
+}
+
+
+.smallerimage > img {
+
+  width: 24rem;
+  max-width: 100%;
+  height: auto;
+  width: auto\9;
+  min-width: 60%;
+  padding-top: 2rem;
+}
+

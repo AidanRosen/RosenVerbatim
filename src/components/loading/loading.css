@@ -1,0 +1,13 @@
+.loading-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0; /* Set your background color */
+  }
+  
+  .loading-content {
+    text-align: center;
+    font-size: 24px; /* Set your desired font size */
+    color: #333; /* Set your text color */
+  }

@@ -22,7 +22,7 @@ export function useLogin() {
             console.log(email)
             console.log(password)
             await signInWithEmailAndPassword(auth, email, password);
-            navigate("/protected/dashboard");
+            navigate("/protected/audiomanager");
         }
         catch(error) {
             console.log(error);
