@@ -124,3 +124,20 @@
     font-size: 48px;
   }
   
+
+  .back-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .back-button button {
+    background-color: #7600DD;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .back-button button:hover {
+    background-color: #5d00a8;
+  }
