@@ -248,9 +248,7 @@ const AudioPlay = () => {
 
 
         <div class="column columnbackground" > {/*  Body Child Div 1 Start - Left Container */}
-              <Link to="/protected/history">
-                <button>Navigate to history</button>
-              </Link>
+              
             <h3>STEP 2: RECORD or UPLOAD</h3>
             <div className="">
 {/* `              <input id="fileInput" type="file" onChange={addFile} style={{ display: "none" }} /> */}

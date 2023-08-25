@@ -150,7 +150,7 @@ const HistoryTab = () => {
         setLoading(true);
         console.log(loading)
         const prefix = 'https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/';
-        const processedEnding = "_processed.mp3";
+        const processedEnding = "_processed";
         const response = await axios.get(`https://api-sl2ugsqq7a-uc.a.run.app/getFiles/${user.uid}`);
         const filteredUrls = response.data.filter((url) => url.startsWith(prefix) && url.includes(processedEnding));
 
@@ -168,7 +168,9 @@ const HistoryTab = () => {
 
         const names = Object.keys(documentIds);
         const fileNameToUrlMap = {};
+        console.log(filteredUrls)
         for (const url of filteredUrls) {
+          console.log(url);
           const truncated = url.replace(prefix + user.uid + "/", "")
           const fileName = truncated.substring(0, truncated.indexOf("?temp_url"));
           fileNameToUrlMap[fileName] = url;

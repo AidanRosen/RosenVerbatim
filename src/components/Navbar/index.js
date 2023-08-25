@@ -37,7 +37,7 @@ const Navbar = () => {
 					
 				</NavMenu>
 			</Nav>
-			<Outlet></Outlet>
+			<Outlet/>
 		</>
 	);
 };

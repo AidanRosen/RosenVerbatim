@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import React, { Component }  from 'react';
 // import AudioPlay from './AudioPlay.js';
@@ -20,6 +19,7 @@ import {router} from './lib/routes'
 
 
 function App() {
+
   return (
     // -- COMMENT THIS OUT FOR NOW AND MOVE TO ITS OWN PAGE
     // <div className="App">
@@ -39,7 +39,10 @@ function App() {
 		// 		<Route path='/History' element={<History />} />
 		// 	</Routes>
 		// </Router>
-	<RouterProvider router={router}/>
+	<div className='App'>
+		<RouterProvider router={router}/>
+	</div>
+	
   );
 }
 

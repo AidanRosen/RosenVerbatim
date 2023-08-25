@@ -1,5 +1,4 @@
 from fastapi import FastAPI, File, UploadFile
-<<<<<<< HEAD
 import torch
 from torch import Tensor
 import io
@@ -9,34 +8,42 @@ import numpy as np
 import torchaudio
 from fastapi.responses import Response
 from df.enhance import enhance, init_df, load_audio, save_audio
-import speech_recognition as sr
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 #  init_df, load_audio, save_audio
 
 app = FastAPI()
 
-def load_audio(file_bytes: bytes, sr: int = 48_000) -> np.ndarray:
+def load_audio(file: (str, bytes), sr: int = 16000):
     """
-    Use file's bytes and transform to mono waveform, resampling as necessary
+    Open an audio file and read as mono waveform, resampling as necessary
+
     Parameters
     ----------
-    file: bytes
-        The bytes of the audio file
+    file: (str, bytes)
+        The audio file to open or bytes of audio file
+
     sr: int
         The sample rate to resample the audio if necessary
+
     Returns
     -------
     A NumPy array containing the audio waveform, in float32 dtype.
     """
+    
+    if isinstance(file, bytes):
+        inp = file
+        file = 'pipe:'
+    else:
+        inp = None
+    
     try:
         # This launches a subprocess to decode audio while down-mixing and resampling as necessary.
         # Requires the ffmpeg CLI and `ffmpeg-python` package to be installed.
         out, _ = (
-            ffmpeg.input('pipe:', threads=0)
-            .output("pipe:", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
-            .run_async(pipe_stdin=True, pipe_stdout=True)
-        ).communicate(input=file_bytes)
-
+            ffmpeg.input(file, threads=0)
+            .output("-", format="s16le", acodec="pcm_s16le", ac=1, ar=sr)
+            .run(cmd="ffmpeg", capture_stdout=True, capture_stderr=True, input=inp)
+        )
     except ffmpeg.Error as e:
         raise RuntimeError(f"Failed to load audio: {e.stderr.decode()}") from e
 
@@ -55,18 +62,6 @@ def post_process(
         audio = audio.to(torch.float32) / (1 << 15)
     return audio
 
-=======
-from utilities import post_process, load_audio
-import io
-import whisper
-import torchaudio
-from fastapi.responses import Response
-from df.enhance import enhance, init_df
-from fastapi.middleware.cors import CORSMiddleware
-
-app = FastAPI()
-
->>>>>>> main
 origins = [
     "http://localhost:3000",
 ]
@@ -80,17 +75,12 @@ app.add_middleware(
     expose_headers=["*"]
 )
 
-<<<<<<< HEAD
 @app.post("/process")
 async def postAudio(file:UploadFile = File(...)):
-    alert("I am here!!!")
     print("Audio received!")
     print(file.filename)
     model, df_state, _ = init_df()
-    # audio, _ = load_audio(io.BytesIO(file), sr=df_state.sr())
     audio, samplerate = torchaudio.load(file.file)
-    
-    
     print(samplerate)
     enhanced = enhance(model, df_state, audio)
     audio_tensor = post_process(enhanced)
@@ -98,35 +88,10 @@ async def postAudio(file:UploadFile = File(...)):
     buffer_: bytes = io.BytesIO()
     torchaudio.save(buffer_, audio_tensor, df_state.sr(), format="wav")
     buffer_.seek(0)
-    save_audio("enhanced.wav", enhanced, df_state.sr())
     pretranscribe = load_audio(buffer_.read())
-    result = model.transcribe("enhanced.wav")
-    print(result["text"])
-    return Response(content=buffer_.getvalue(), media_type="audio/wav")
-=======
-
-
-@app.on_event("startup")
-async def startup_event():
-    global deepFilterNet, df_state, whisperModel
-    deepFilterNet, df_state, _ = init_df()
-    whisperModel = whisper.load_model("small.en")
-
-@app.post("/process")
-async def process(file:UploadFile = File(...)):
-    print(file.filename)
-    audio, samplerate = torchaudio.load(file.file)
-    print(samplerate)
-    enhanced = enhance(deepFilterNet, df_state, audio)
-    audio_tensor = post_process(enhanced)
-    buffer_: bytes = io.BytesIO()
-    torchaudio.save(buffer_, audio_tensor, df_state.sr(), format="wav")
-    buffer_.seek(0)
-    pretranscribe = load_audio(buffer_.read())
-    result = whisperModel.transcribe(pretranscribe)
+    result = model.transcribe(pretranscribe)
     print(result["text"])
     header = {"transcript": result["text"].strip()}
     return Response(content=buffer_.getvalue(), headers=header, media_type="audio/wav")
->>>>>>> main
 
 

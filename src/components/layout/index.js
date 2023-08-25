@@ -17,6 +17,6 @@ export default function Layout() {
     if(isLoading) return "Currently Loading...";
 
     return (
-        <>This is the child element: <Outlet/> </>
+        <Outlet/>
     )
 }

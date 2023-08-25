@@ -102,7 +102,7 @@ const AudioManager = () => {
     const audioBuffer = exportBuffer(buffer[0], browserSampleRate);
 
     console.log(audioBuffer);
-    if (recordingName.includes(".wav")) {
+    if (recordingName && recordingName.includes(".wav")) {
       setRecordingName(recordingName.substring(0, recordingName.indexOf(".wav")));
     }
     console.log(recordingName)
@@ -291,7 +291,7 @@ const AudioManager = () => {
           </div> {/* Parent New Cirlce Element End */}
           {/* End of new circle element */}
 
-          {/* Text input for changing the file name */}
+          {/* Text input for changing the file name */ }
           <input
             type="text"
             value={recordingName}
@@ -345,21 +345,6 @@ const AudioManager = () => {
         </div>
 
       </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     </div>
   );
