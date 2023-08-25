@@ -4,8 +4,10 @@ import axios from 'axios';
 import { useAuth } from '../hooks/auth';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
+import { useNavigate } from 'react-router-dom'
 
 const HistoryTab = () => {
+  const navigate = useNavigate();
   const [audioPlaying, setAudioPlaying] = useState(null);
   const [tempUrls, setTempUrls] = useState([]);
   const { user, isLoading } = useAuth();
@@ -191,6 +193,11 @@ const HistoryTab = () => {
 
   return (
     <div className="history-tab">
+       <div className="back-button">
+        <button className="back-button" onClick={() => navigate('../AudioManager')}>
+          Back to Home Page
+        </button>
+      </div>
       <div className="file-list">
         <h2>Files</h2>
         <ul className="file-list-items">
