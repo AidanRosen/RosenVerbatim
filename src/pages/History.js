@@ -5,11 +5,13 @@ import { useAuth } from '../hooks/auth';
 import { collection, query, where, getDocs } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useNavigate } from 'react-router-dom'
+import LoadingPage from '../components/loading/loading';
 
 const HistoryTab = () => {
   const navigate = useNavigate();
   const [audioPlaying, setAudioPlaying] = useState(null);
   const [tempUrls, setTempUrls] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { user, isLoading } = useAuth();
   const [folders, setFolders] = useState([
     { id: 1, name: 'Folder 1' },
@@ -141,9 +143,12 @@ const HistoryTab = () => {
     }
   };
 
+  console.log(loading);
   useEffect(() => {
     async function fetchTempUrls() {
       try {
+        setLoading(true);
+        console.log(loading)
         const prefix = 'https://object.cloud.sdsc.edu/v1/AUTH_8492e628f69a472d965fab8d3c621959/myContainer/home/ubuntu/audio_recordings/';
         const processedEnding = "_processed.mp3";
         const response = await axios.get(`https://api-sl2ugsqq7a-uc.a.run.app/getFiles/${user.uid}`);
@@ -180,6 +185,7 @@ const HistoryTab = () => {
         });
         setTempUrls(filteredUrls);
         setFiles(files);
+        setLoading(false);
       } catch (error) {
         console.error('Error fetching temp URLs:', error);
       }
@@ -189,8 +195,12 @@ const HistoryTab = () => {
     const intervalId = setInterval(fetchTempUrls, 86400000);
     return () => clearInterval(intervalId);
   }, []);
-
-
+  console.log(loading);
+  if (loading) {
+    return (
+      <div><LoadingPage/></div>
+    )
+  };
   return (
     <div className="history-tab">
        <div className="back-button">

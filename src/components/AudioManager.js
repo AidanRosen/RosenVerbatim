@@ -32,6 +32,7 @@ const AudioManager = () => {
   const [transcript, setTranscript] = useState();
   const { user, isLoading } = useAuth();
   const [enhancedFile, setEnhancedFile] = useState();
+  const [recordingName, setRecordingName] = useState();
 
   const [backgroundRemoval, setBackgroundRemoval] = useState(false); // Track background removal state
   const [isProcessing, setIsProcessing] = useState(false); // Track whether processing is ongoing
@@ -100,8 +101,13 @@ const AudioManager = () => {
     const { buffer } = await recorder.stop();
     const audioBuffer = exportBuffer(buffer[0], browserSampleRate);
 
-        console.log(audioBuffer);
-    const audioFile = new File([audioBuffer], 'file.wav', { type: 'audio/wav' });
+    console.log(audioBuffer);
+    if (recordingName.includes(".wav")) {
+      setRecordingName(recordingName.substring(0, recordingName.indexOf(".wav")));
+    }
+    console.log(recordingName)
+    const audioFile = new File([audioBuffer], recordingName, { type: 'audio/wav' });
+    console.log(audioFile.name);
     setAudio(URL.createObjectURL(audioFile));
     setFile(audioFile);
     setRecording(false);
@@ -195,151 +201,166 @@ const AudioManager = () => {
     return [uploadResponse, enhancedUploadResponse];
   };
 
+  const handleFileNameChange = (event) => {
+    setRecordingName(event.target.value);
+  };
+
   return (
     <div>
-    <div>  {/* Main Container Div Start *}
+      <div>  {/* Main Container Div Start *}
     
     <meta name="viewport" content="width=device-width, initial-scale=1"></meta>  
     
      {/* Logo Start   */}
-      <div class="centerimage smallerimage">	  
-        <img src={logo} alt="Logo"  />	  
+        <div class="centerimage smallerimage">
+          <img src={logo} alt="Logo" />
+        </div>
+        {/* Logo End */}
+
+
+
       </div>
-      {/* Logo End */}
-    
-    
-    
-    </div>
-    
-    
-    
-    <div class="row">  {/* Body Container Div Start */}
-     <div class="column columnbackground" >  {/*  Body Child Div 1 Start - Left Container  */}
-     <h3>STEP 1: SELECT OPTIONS</h3>
-            <div className="toggle-switch togglestyle child">
+
+
+
+      <div class="row">  {/* Body Container Div Start */}
+        <div class="column columnbackground" >  {/*  Body Child Div 1 Start - Left Container  */}
+          <h3>STEP 1: SELECT OPTIONS</h3>
+          <div className="toggle-switch togglestyle child">
             <label className="switch">
-            <input type="checkbox" />
-            <span className="slider"></span>
-          </label>
-          <label className="toggle-label child">Destuttering</label>          
+              <input type="checkbox" />
+              <span className="slider"></span>
+            </label>
+            <label className="toggle-label child">Destuttering</label>
           </div>
-    
- <div className="toggle-switch togglestyle child">
-          <label className="switch">
-            <input
-              type="checkbox"
-              onChange={() => {
-                if (!isProcessing) { // Allow toggling only if not processing
-                  setBackgroundRemoval(!backgroundRemoval);
-                  /* processBackgroundRemoval(); */ /* COMMENT OUT FOR NOW -- JS 8/20/23 */
-                }
-              }}
-            />
-            <span className={`slider ${isProcessing ? 'processing' : ''}`}></span>
+
+          <div className="toggle-switch togglestyle child">
+            <label className="switch">
+              <input
+                type="checkbox"
+                onChange={() => {
+                  if (!isProcessing) { // Allow toggling only if not processing
+                    setBackgroundRemoval(!backgroundRemoval);
+                    /* processBackgroundRemoval(); */ /* COMMENT OUT FOR NOW -- JS 8/20/23 */
+                  }
+                }}
+              />
+              <span className={`slider ${isProcessing ? 'processing' : ''}`}></span>
             </label>
             <label className="toggle-label child">Background Noise Removal</label>
           </div>
- 
+
           <div className="toggle-switch togglestyle child">
-          <label className="switch">
-            {/* <input type="checkbox" onChange={() => startTranscription(setTranscription)} /> */}
-            <span className="slider"></span>
-          </label>
-          <label className="toggle-label child">Transcription</label>
-        </div>   
-    
-    
-    
-     </div>  {/*  Body Child Div 1 End - Left Container  */}
-    
-    
-    <div class="column columnbackground" > {/*  Body Child Div 2 Start - Left Container */}
-            <h3>STEP 2: RECORD or UPLOAD</h3>
-    
-    
-    
-            {/* New circle element */}
-            <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
-    
-              <div className={`outer-circle ${recording ? 'disabled' : ''}`}> {/* Outer Circle - Start */}
-                {/* Additional circle with a delay */}
-                <div className={`delay-circle ${recording ? 'delayed' : ''}`}></div>
-                {/* End of additional circle */}
-                  <div 
-                    className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
-                    onClick={() => {
-                      recording ? stopRecord() : startRecord();
-                    }}
-                  > {/* Sub Div 1 - Start */}
-                    <button className={`record-button ${recording ? 'disabled' : ''}`}> {/* Recording Button - Start */}
-                      <div className="button-content">
-                        {recording ? 'Recording...' : 'Record'}
-                      </div>
-                    </button>  {/* Recording Button - End */}
-                  </div> {/* Sub Div 1 - End */}
-              </div> {/* Outer Circle - End */}
-            </div> {/* Parent New Cirlce Element End */}
-            {/* End of new circle element */}
-        
-        
-                 
-                  <div className='ORStyle'>
-                  OR 
+            <label className="switch">
+              {/* <input type="checkbox" onChange={() => startTranscription(setTranscription)} /> */}
+              <span className="slider"></span>
+            </label>
+            <label className="toggle-label child">Transcription</label>
+          </div>
+
+
+
+        </div>  {/*  Body Child Div 1 End - Left Container  */}
+
+
+        <div class="column columnbackground" > {/*  Body Child Div 2 Start - Left Container */}
+          <h3>STEP 2: RECORD or UPLOAD</h3>
+
+
+
+          {/* New circle element */}
+          <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
+
+            <div className={`outer-circle ${recording ? 'disabled' : ''}`}> {/* Outer Circle - Start */}
+              {/* Additional circle with a delay */}
+              <div className={`delay-circle ${recording ? 'delayed' : ''}`}></div>
+              {/* End of additional circle */}
+              <div
+                className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
+                onClick={() => {
+                  recording ? stopRecord() : startRecord();
+                }}
+              > {/* Sub Div 1 - Start */}
+                <button className={`record-button ${recording ? 'disabled' : ''}`}> {/* Recording Button - Start */}
+                  <div className="button-content">
+                    {recording ? 'Recording...' : 'Record'}
                   </div>
-                    
+                </button>  {/* Recording Button - End */}
+              </div> {/* Sub Div 1 - End */}
+            </div> {/* Outer Circle - End */}
+          </div> {/* Parent New Cirlce Element End */}
+          {/* End of new circle element */}
 
-                    {/* Upload Section - Start */}
-                    <div>{/*  Upload Div - Start */}
+          {/* Text input for changing the file name */}
+          <input
+            type="text"
+            value={recordingName}
+            onChange={handleFileNameChange}
+            placeholder="Enter File Name"
+          />
 
-                    <input disabled={recording} type="file" onChange={addFile} />
-
-                    <button onClick={handleClick}>
-                      {buttonName}
-                    </button>
-
-                    {audio != null && (
-                      <button disabled={processing} onClick={processFile}>
-                        Process
-                      </button>
-                    )}
-                    {enhanced != null && (
-                      <div>
-                        <button onClick={playEnhanced}>Play Enhanced Audio</button>
-                        <button onClick={upload}>Backup</button>
-                      </div>
-                    )}{transcript != null && (
-                      <p className="transcript"> Transcript: {transcript} </p>
-                    )}
+          {/* Display the current file name */}
+          <p>Current File Name: {recordingName}</p>
 
 
-                    </div>{/*  Upload Div - End */}
-                    <Link to="/protected/history">
-                      <button>Navigate to history</button>
-                  </Link>
-        
+
+          <div className='ORStyle'>
+            OR
+          </div>
+
+
+          {/* Upload Section - Start */}
+          <div>{/*  Upload Div - Start */}
+
+            <input disabled={recording} type="file" onChange={addFile} />
+
+            <button onClick={handleClick}>
+              {buttonName}
+            </button>
+
+            {audio != null && (
+              <button disabled={processing} onClick={processFile}>
+                Process
+              </button>
+            )}
+            {enhanced != null && (
+              <div>
+                <button onClick={playEnhanced}>Play Enhanced Audio</button>
+                <button onClick={upload}>Backup</button>
+              </div>
+            )}{transcript != null && (
+              <p className="transcript"> Transcript: {transcript} </p>
+            )}
+
+
+          </div>{/*  Upload Div - End */}
+          <Link to="/protected/history">
+            <button>Navigate to history</button>
+          </Link>
+
+        </div>
+        <div>
+
+
+        </div>
+
       </div>
-      <div>
-               
-        
-      </div>
-      
-            </div>
-    
 
-    
-  
-    
 
-    
-    
 
-    
-    
-    
-      
-        
-   
-       
+
+
+
+
+
+
+
+
+
+
+
+
+
     </div>
   );
 };
