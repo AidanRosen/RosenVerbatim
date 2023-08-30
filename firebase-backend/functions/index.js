@@ -252,6 +252,43 @@ app.get("/getFiles/:uid", async (req, res) => {
   }).connect(sshConfig);
 });
 
+app.delete("/deleteFile/:uid/:file", async (req, res) => {
+  console.log("requested to delete files");
+  res.set("Access-Control-Allow-Origin", "*");
+
+  const {uid, file} = req.params;
+
+  // Name and id of the secret key in secret manager
+  const secretName = "verbatim-ssh-key";
+  const id = "648639423919";
+  // Create the path to retrieve the SSH key from Google secret manager.
+  const pathToKey = `projects/${id}/secrets/${secretName}/versions/latest`;
+
+  // Retrieve SSH private key from secret manager using 'getSecret' function.
+  const sshKey = await getSecret(pathToKey);
+
+  // Set up the SSH configuration object for connecting to the remote server.
+  const sshConfig = {
+    host: "132.249.242.149", // IP addrerss of remote server
+    username: "ubuntu", // Remote Username
+    port: 22,
+    privateKey: sshKey, // Private SSH Key
+  };
+
+  const sshClient = new Client();
+
+  sshClient.on("ready", () => {
+    console.log("SSH Connection established...");
+    sshClient.exec(`~/del_file.sh ${uid} '${file}'`, (err, stream) =>{
+      if (err) throw err;
+
+      stream.on("end", () => {
+        sshClient.end();
+      });
+    });
+  }).connect(sshConfig);
+});
+
 exports.helloWorld = onRequest((request, response) => {
   logger.info("Hello logs!", {structuredData: true});
   response.send("Hello from Firebase!");
