@@ -15,7 +15,6 @@ import SignUp from './pages/signup';
 import History from './pages/History';
 import Layout from './components/layout';
 import {router} from './lib/routes'
-import { ToastContainer } from 'react-toastify';
 
 
 
@@ -42,7 +41,6 @@ function App() {
 		// </Router>
 	<div className='App'>
 		<RouterProvider router={router}/>
-		<ToastContainer />
 	</div>
 	
   );
