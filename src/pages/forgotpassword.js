@@ -52,7 +52,7 @@ const forgotpassword = () => {
 
             <div className="formfields">
                  <div className='loginlink'>                    
-                 <a href='./signup'>Register</a> &nbsp;/&nbsp; <a href='./login'> Login</a>
+                 <a href='./register'>Register</a> &nbsp;/&nbsp; <a href='./login'> Login</a>
                  </div>
             </div>
 

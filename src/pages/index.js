@@ -20,7 +20,7 @@ const Home = () => {
 
                 <div class="faketab">
                     <div className="faketableft">
-                        <a href="/signup">
+                        <a href="/register">
                         <button className="signup_btn" value="SIGN UP" >SIGN UP</button>
                         </a>
                     </div>
