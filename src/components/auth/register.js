@@ -12,6 +12,7 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -37,7 +38,13 @@ export default function Register() {
       await setDoc(userDocRef, {
         email: userCredential.user.email,
         username: username,
-      })
+      });
+
+      setShowSuccessMessage(true);
+
+      setTimeout(() => {
+        setShowSuccessMessage(false);
+      }, 3000);
       // Optionally, you can redirect the user to a different page after successful registration.
     } catch (error) {
       setError(error.message);
@@ -49,6 +56,7 @@ export default function Register() {
     hintText2 = "Password";
 
   return (
+    
     <div class="container">  {/* Main Container Div Start *}
              
         <meta name="viewport" content="width=device-width, initial-scale=1"></meta>    
@@ -96,9 +104,15 @@ export default function Register() {
                 <div className="formfields">
                     <div>
                         
-                    <button className="continue_btn">CONTINUE</button>
+                    <button className="continue_btn" onClick={handleRegister}>CONTINUE</button>
                     </div>
                 </div>
+
+                {showSuccessMessage && (
+                  <div className="notification visible">
+                    Account created successfully!
+                  </div>
+                )}
 
                 <div className="formfields">
                     <div className='loginlink'>                    
