@@ -281,9 +281,15 @@ app.delete("/deleteFile/:uid/:file", async (req, res) => {
     console.log("SSH Connection established...");
     sshClient.exec(`~/del_file.sh ${uid} '${file}'`, (err, stream) =>{
       if (err) throw err;
+      let output = [];
 
-      stream.on("end", () => {
+      stream.on("data", (data) => {
+        const out = data.toString().trim().split("\n");
+        output = output.concat(out);
+      }).on("end", () => {
         sshClient.end();
+        console.log(output);
+        res.json(output);
       });
     });
   }).connect(sshConfig);
