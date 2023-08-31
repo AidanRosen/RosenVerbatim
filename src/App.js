@@ -5,8 +5,6 @@ import { BrowserRouter as Router, Routes, Route, RouterProvider } from 'react-ro
 
 import {router} from './lib/routes'
 
-
-
 function App() {
 
   return (
