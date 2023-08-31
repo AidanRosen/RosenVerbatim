@@ -1,15 +1,18 @@
 .record-container {
   position: absolute;
-  top: 50%; /* Center vertically */
-  right: 50%; /* Center horizontally */
-  transform: translate(50%, -50%);
+  top: 40%;
+  right: 5%;
+  transform: translateY(-50%);
   text-align: center;
 }
+
 .record-button {
   position: relative;
+  /* width: 160px; */ /* Scaled by 250% */
+  /* height: 160px; */ /* Scaled by 250% */
   
-  width: 40rem;
-  height: 40rem;
+  width: 25rem;
+  height: 25rem;
   
   background-color: #d4a5ff;
   border-radius: 50%;
@@ -18,18 +21,14 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s;
-  /* margin-bottom: -168px; 
-  margin-left: 38rem; */
-  margin: auto;
-}
-
-.inner-circle {
-  padding-top: 40px;
+  margin-bottom: 50px; /* Scaled by 250% */
+  /* margin: auto; */
+  margin-left: 0.2rem;
 }
 
 .record-button-inner {
-  width: 120px; 
-  height: 120px; 
+  width: 120px; /* Scaled by 250% */
+  height: 120px; /* Scaled by 250% */
   background-color: #9747ff;
   border-radius: 50%;
   display: flex;
@@ -46,12 +45,87 @@
   /* font-size: 40px; */ /* Scaled by 250% */ 
   font-size: 2.5rem;
   
-  width: 40%;
+  width: 30%;
   margin: auto;
   
   margin-top: 20px;  
   
 }
+
+.toggle-switch-container {
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  transform: translateY(-50%);
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px; /* Scaled by 250% */
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px; /* Scaled by 250% */
+  height: 50px; /* Scaled by 250% */
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  border-radius: 25px; /* Scaled by 250% */
+  cursor: pointer;
+  transition: 1s; /* Scaled by 250% */
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 40px; /* Scaled by 250% */
+  width: 40px; /* Scaled by 250% */
+  left: 5px; /* Scaled by 250% */
+  bottom: 5px; /* Scaled by 250% */
+  background-color: white;
+  border-radius: 50%;
+  transition: 1s; /* Scaled by 250% */
+}
+
+.switch input:checked + .slider {
+  background-color: #9747ff;
+}
+
+.switch input:checked + .slider:before {
+  transform: translateX(50px); /* Scaled by 250% */
+}
+
+.toggle-label {
+  margin-left: 25px; /* Scaled by 250% */
+  font-size: 45px; /* Scaled by 250% */
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+}
+
+/* Additional style for the processing state of the slider */
+.slider.processing {
+  background-color: #ccc; /* Adjust the color to grey out the slider */
+  cursor: not-allowed; /* Prevent clicking while processing */
+}
+
+/* ... (other styles) */
+
 
 .song {
 	/* padding-top: 30px; */
@@ -65,14 +139,12 @@
   width: 50%;
   
   font-size: 2rem;
-  padding-bottom: 0;
+  padding-bottom: 40px;
   
 }
 
 .columnbackground {
-  display: flex;
-  align-items: center;
-  padding-left: 2rem;
+  /* background-color:#aaa; */
 
 }
 
@@ -113,6 +185,13 @@ h3 {
 
 }
 
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
 .child {
 
   font-size: 3rem;
@@ -140,6 +219,12 @@ h3 {
   height: 300px; /* Should be removed. Only for demonstration */
 }
 
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
 
 
 .child {
@@ -151,16 +236,13 @@ h3 {
  
 }
 
-
-
 }
-
 
 /* Clear floats after the columns */
 .row:after {
-  /* content: "";
-  /* display: table; */
-  /* clear: both; */ 
+  content: "";
+  display: table;
+  clear: both;
   
   padding-bottom: 80px;
   
@@ -257,12 +339,6 @@ div.RecordButtonNew.record_btn:hover span {
 }
 
 
-.togglestyle,
-.toggle-switch-container,
-h3 {
-  display: none;
-}
-
 .smallerimage > img {
 
   width: 24rem;
@@ -273,30 +349,12 @@ h3 {
   padding-top: 2rem;
 }
 
-
-.center-vertically-left {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-left: 65rem;
-}
-
-.file-input {
-  /* Add any desired styles for the input here */
-}
-
-.file-input:focus {
-  outline: none; /* Remove outline when input is focused */
-}
-
-.current-file-name {
-  /* Add any desired styles for the current file name display here */
-}
-
 .record-button.disabled {
   background-color: rgba(212, 165, 255, 0.5); /* Adjust the alpha (0.5) to control transparency */
   cursor: not-allowed; /* Change the cursor style to indicate it's not clickable */
-}.custom-button {
+}
+
+.custom-button {
   background-color: #7600DD;
   color: white;
   border: none;

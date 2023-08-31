@@ -235,102 +235,108 @@ const AudioManager = () => {
             </Backdrop>
 
             <div class="row">  {/* Body Container Div Start */}
-                
-                {/* New circle element */}
-                <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
-                    
-                    <div className={`outer-circle ${recording ? 'disabled' : ''}`}> {/* Outer Circle - Start */}
-                        {/* Additional circle with a delay */}
-                        <div className={`delay-circle ${recording ? 'delayed' : ''}`}></div>
-                        {/* End of additional circle */}
-                        <div
-                            className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
-                        > {/* Sub Div 1 - Start */}
-                            <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`}
-                                onClick={() => {
-                                    if (recordingName === null || recordingName.trim() === '') {
-                                        // You can choose to display an error message or take any other action here
-                                        return;
-                                    }
-                                    recording ? stopRecord() : startRecord();
-                                }}> {/* Recording Button - Start */}
-                                <div className="button-content">
-                                    {recording ? 'Recording...' : 'Record'}
-                                    <br></br>
-                                    <input
-                                        type="text"
-                                        value={recordingName}
-                                        onChange={handleFileNameChange}
-                                        placeholder="Enter File Name"
-                                        className="file-input"
-                                        onClick={(event) => {
-                                            event.stopPropagation();
-                                        }}
-                                    />
-                                    <p className="current-file-name">Current File Name: {recordingName}</p>
-                                </div>
-                            </button>  {/* Recording Button - End */}
-                        </div> {/* Sub Div 1 - End */}
-                    </div> {/* Outer Circle - End */}
-                </div> {/* Parent New Cirlce Element End */}
-                {/* End of new circle element */}
-
-                {/* Text input for changing the file name */}
-                <div className="center-vertically-left">
-
-                </div>
+                <div class="column columnbackground" >  {/*  Body Child Div 1 Start - Left Container  */}
+                    <h3>STEP 1: SELECT OPTIONS</h3>
+                    <div className="toggle-switch togglestyle child">
+                        <label className="switch">
+                            <input type="checkbox" onChange={() => { setIsDestutter(!isDestutter); console.log(isDestutter) }} />
+                            <span className="slider"></span>
+                        </label>
+                        <label className="toggle-label child">Destuttering</label>
+                    </div>
 
 
-                {/* Upload Section - Start */}
-                <div>
-                    <input
-                        disabled={recording}
-                        type="file"
-                        onChange={addFile}
-                        className="mainPageButton" // Apply mainPageButton class
-                    />
 
-                    <button
-                        onClick={handleClick}
-                        className={`mainPageButton ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
-                    >
-                        {buttonName}
-                    </button>
 
-                    {audio != null && (
-                        <button
-                            disabled={processing}
-                            onClick={processFile}
-                            className="mainPageButton process-button"
-                        >
-                            Process
+                </div>  {/*  Body Child Div 1 End - Left Container  */}
+
+
+                <div class="column columnbackground" > {/*  Body Child Div 2 Start - Left Container */}
+                    <h3>STEP 2: RECORD or UPLOAD</h3>
+
+
+
+                    {/* New circle element */}
+                    <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
+
+                        <div className={`outer-circle ${recording ? 'disabled' : ''}`}> {/* Outer Circle - Start */}
+                            {/* Additional circle with a delay */}
+                            <div className={`delay-circle ${recording ? 'delayed' : ''}`}></div>
+                            {/* End of additional circle */}
+                            <div
+                                className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
+                            > {/* Sub Div 1 - Start */}
+                                <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`} 
+                                    onClick={() => {
+                                        if (recordingName === null || recordingName.trim() === '') {
+                                            // You can choose to display an error message or take any other action here
+                                            return;
+                                        }
+                                        recording ? stopRecord() : startRecord();
+                                    }}> 
+                                    {/* Recording Button - Start */}
+                                    <div className="button-content">
+                                        {recording ? 'Recording...' : 'Record'}
+                                        <br></br>
+                                        <input
+                                            type="text"
+                                            value={recordingName}
+                                            onChange={handleFileNameChange}
+                                            placeholder="Enter File Name"
+                                            className="file-input"
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                            }}
+                                            />
+                                    </div>
+                                </button>  {/* Recording Button - End */}
+                            </div> {/* Sub Div 1 - End */}
+                        </div> {/* Outer Circle - End */}
+                    </div> {/* Parent New Cirlce Element End */}
+                    {/* End of new circle element */}
+
+                    {/* Display the current file name */}
+                    <p>Current File Name: {recordingName}</p>
+
+
+
+                    <div className='ORStyle'>
+                        OR
+                    </div>
+
+
+                    {/* Upload Section - Start */}
+                    <div>{/*  Upload Div - Start */}
+
+                        <input disabled={recording} type="file" onChange={addFile} />
+
+                        <button onClick={handleClick}>
+                            {buttonName}
                         </button>
-                    )}
-                    {enhanced != null && (
-                        <div>
-                            <button
-                                onClick={playEnhanced}
-                                className="mainPageButton play-processed-button"
-                            >
-                                Play Enhanced Audio
-                            </button>
-                            <button
-                                onClick={upload}
-                                className="mainPageButton upload-button"
-                            >
-                                Backup
-                            </button>
-                        </div>
-                    )}
-                    {transcript != null && (
-                        <p className="transcript"> Transcript: {transcript} </p>
-                    )}
-                </div>
-                <Link to="/protected/history">
-                    <button className="mainPageButton history-button">Navigate to History</button>
-                </Link>
-                {/* End of Upload Section */}
 
+                        {audio != null && (
+                            <button disabled={processing} onClick={processFile}>
+                                Process
+                            </button>
+
+
+                        )}
+                        {enhanced != null && (
+                            <div>
+                                <button onClick={playEnhanced}>Play Enhanced Audio</button>
+                                <button onClick={upload}>Backup</button>
+                            </div>
+                        )}{transcript != null && (
+                            <p className="transcript"> Transcript: {transcript} </p>
+                        )}
+
+
+                    </div>{/*  Upload Div - End */}
+                    <Link to="/protected/history">
+                        <button>Navigate to history</button>
+                    </Link>
+
+                </div>
                 <div>
 
 
@@ -339,6 +345,7 @@ const AudioManager = () => {
             </div>
 
         </div>
+
     );
 };
 
