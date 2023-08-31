@@ -269,60 +269,56 @@ const AudioManager = () => {
                     </div>
 
 
+{/* Upload Section - Start */}
+<div>
+    <input
+        disabled={recording}
+        type="file"
+        onChange={addFile}
+        className="mainPageButton" // Apply mainPageButton class
+    />
+    
+    <button
+        onClick={handleClick}
+        className={`mainPageButton ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
+    >
+        {buttonName}
+    </button>
 
-                    {/* Upload Section - Start */}
-                <div>
-                    <input
-                        disabled={recording}
-                        type="file"
-                        onChange={addFile}
-                        className="custom-button" // Apply custom button class
-                    />
-                    
-                    <button
-                        onClick={handleClick}
-                        className={`custom-button ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
-                    >
-                        {buttonName}
-                    </button>
-
-                    {audio != null && (
-                        <button
-                            disabled={processing}
-                            onClick={processFile}
-                            className="custom-button process-button"
-                        >
-                            Process
-                        </button>
-                    )}
-                    {enhanced != null && (
-                        <div>
-                            <button
-                                onClick={playEnhanced}
-                                className="custom-button play-processed-button"
-                            >
-                                Play Enhanced Audio
-                            </button>
-                            <button
-                                onClick={upload}
-                                className="custom-button upload-button"
-                            >
-                                Backup
-                            </button>
-                        </div>
-                    )}
-                    {transcript != null && (
-                        <p className="transcript"> Transcript: {transcript} </p>
-                    )}
-                </div>
-                <Link to="/protected/history">
-                    <button className="custom-button history-button">Navigate to History</button>
-                </Link>
-                {/* End of Upload Section */}
-                    <Link to="/protected/history">
-                        <button>Navigate to history</button>
-                    </Link>
-
+    {audio != null && (
+        <button
+            disabled={processing}
+            onClick={processFile}
+            className="mainPageButton process-button"
+        >
+            Process
+        </button>
+    )}
+    {enhanced != null && (
+        <div>
+            <button
+                onClick={playEnhanced}
+                className="mainPageButton play-processed-button"
+            >
+                Play Enhanced Audio
+            </button>
+            <button
+                onClick={upload}
+                className="mainPageButton upload-button"
+            >
+                Backup
+            </button>
+        </div>
+    )}
+    {transcript != null && (
+        <p className="transcript"> Transcript: {transcript} </p>
+    )}
+</div>
+<Link to="/protected/history">
+    <button className="mainPageButton history-button">Navigate to History</button>
+</Link>
+{/* End of Upload Section */}
+                   
                 <div>
 
 
