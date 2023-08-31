@@ -286,6 +286,9 @@ const AudioManager = () => {
                                         <input
                                             type="text"
                                             value={recordingName}
+                                            onKeyUp={(event) => {
+                                                event.preventDefault();
+                                            }}
                                             onChange={handleFileNameChange}
                                             placeholder="Enter File Name"
                                             className="file-input"
