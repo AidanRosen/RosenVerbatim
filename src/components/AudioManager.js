@@ -266,14 +266,14 @@ const AudioManager = () => {
                             <div
                                 className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
                             > {/* Sub Div 1 - Start */}
-                                <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`} 
+                                <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`}
                                     onClick={() => {
                                         if (recordingName === null || recordingName.trim() === '') {
                                             // You can choose to display an error message or take any other action here
                                             return;
                                         }
                                         recording ? stopRecord() : startRecord();
-                                    }}> 
+                                    }}>
                                     {/* Recording Button - Start */}
                                     <div className="button-content">
                                         {recording ? 'Recording...' : 'Record'}
@@ -287,7 +287,7 @@ const AudioManager = () => {
                                             onClick={(event) => {
                                                 event.stopPropagation();
                                             }}
-                                            />
+                                        />
                                     </div>
                                 </button>  {/* Recording Button - End */}
                             </div> {/* Sub Div 1 - End */}
@@ -306,44 +306,63 @@ const AudioManager = () => {
 
 
                     {/* Upload Section - Start */}
-                    <div>{/*  Upload Div - Start */}
+                    <div>
+                        <input
+                            disabled={recording}
+                            type="file"
+                            onChange={addFile}
+                            className="mainPageButton" // Apply mainPageButton class
+                        />
 
-                        <input disabled={recording} type="file" onChange={addFile} />
-
-                        <button onClick={handleClick}>
+                        <button
+                            onClick={handleClick}
+                            className={`mainPageButton ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
+                        >
                             {buttonName}
                         </button>
 
                         {audio != null && (
-                            <button disabled={processing} onClick={processFile}>
+                            <button
+                                disabled={processing}
+                                onClick={processFile}
+                                className="mainPageButton process-button"
+                            >
                                 Process
                             </button>
-
-
                         )}
                         {enhanced != null && (
                             <div>
-                                <button onClick={playEnhanced}>Play Enhanced Audio</button>
-                                <button onClick={upload}>Backup</button>
+                                <button
+                                    onClick={playEnhanced}
+                                    className="mainPageButton play-processed-button"
+                                >
+                                    Play Enhanced Audio
+                                </button>
+                                <button
+                                    onClick={upload}
+                                    className="mainPageButton upload-button"
+                                >
+                                    Backup
+                                </button>
                             </div>
-                        )}{transcript != null && (
+                        )}
+                        {transcript != null && (
                             <p className="transcript"> Transcript: {transcript} </p>
                         )}
-
-
-                    </div>{/*  Upload Div - End */}
+                    </div>
                     <Link to="/protected/history">
-                        <button>Navigate to history</button>
+                        <button className="mainPageButton history-button">Navigate to History</button>
                     </Link>
+                    {/* End of Upload Section */}
 
-                </div>
-                <div>
+                    <div>
 
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
 
     );
