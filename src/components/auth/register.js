@@ -11,6 +11,7 @@ import '../../pages/shared.css';
 export default function Register() {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [validPass, setValidPass] = useState(true);
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [username, setUsername] = useState("");
@@ -22,6 +23,7 @@ export default function Register() {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
+    setValidPass(true);
   };
 
   const handleUsernameChange = (e) => {
@@ -32,6 +34,11 @@ export default function Register() {
     e.preventDefault();
     setError(null);
 
+    if (password.length < 8) {
+      setValidPass(false);
+    } else {
+      setValidPass(true);
+    }
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       console.log("User registered:", userCredential.user);
@@ -103,6 +110,18 @@ export default function Register() {
               <input type="password" placeholder={hintText2} value={password} onChange={handlePasswordChange} />
             </div>
           </div>
+
+
+          <div className="formfields">
+            <div>
+              {!validPass && (
+                <div>
+                  Password must be at least 8 characters long!
+                </div>
+              )}
+            </div>
+          </div>
+
 
           <div className="formfields">
             <div>

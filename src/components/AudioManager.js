@@ -166,6 +166,7 @@ const AudioManager = () => {
     };
 
     const upload = async () => {
+        setProcessing(true);
         const formDataOriginal = new FormData();
         const formDataEnhanced = new FormData();
         const timestamp = serverTimestamp();
@@ -202,6 +203,7 @@ const AudioManager = () => {
             timeAdded: timestamp
 
         })
+        setProcessing(false);
         return [uploadResponse, enhancedUploadResponse];
     };
 
