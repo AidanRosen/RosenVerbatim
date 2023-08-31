@@ -112,6 +112,8 @@ const AudioManager = () => {
         resetAnimation();
     };
 
+    
+
     const processFile = async () => {
         setProcessing(true);
         console.log(file);
@@ -269,32 +271,54 @@ const AudioManager = () => {
 
 
                     {/* Upload Section - Start */}
-                    <div>{/*  Upload Div - Start */}
+                <div>
+                    <input
+                        disabled={recording}
+                        type="file"
+                        onChange={addFile}
+                        className="custom-button" // Apply custom button class
+                    />
+                    
+                    <button
+                        onClick={handleClick}
+                        className={`custom-button ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
+                    >
+                        {buttonName}
+                    </button>
 
-                        <input disabled={recording} type="file" onChange={addFile} />
-
-                        <button onClick={handleClick}>
-                            {buttonName}
+                    {audio != null && (
+                        <button
+                            disabled={processing}
+                            onClick={processFile}
+                            className="custom-button process-button"
+                        >
+                            Process
                         </button>
-
-                        {audio != null && (
-                            <button disabled={processing} onClick={processFile}>
-                                Process
+                    )}
+                    {enhanced != null && (
+                        <div>
+                            <button
+                                onClick={playEnhanced}
+                                className="custom-button play-processed-button"
+                            >
+                                Play Enhanced Audio
                             </button>
-
-
-                        )}
-                        {enhanced != null && (
-                            <div>
-                                <button onClick={playEnhanced}>Play Enhanced Audio</button>
-                                <button onClick={upload}>Backup</button>
-                            </div>
-                        )}{transcript != null && (
-                            <p className="transcript"> Transcript: {transcript} </p>
-                        )}
-
-
-                    </div>{/*  Upload Div - End */}
+                            <button
+                                onClick={upload}
+                                className="custom-button upload-button"
+                            >
+                                Backup
+                            </button>
+                        </div>
+                    )}
+                    {transcript != null && (
+                        <p className="transcript"> Transcript: {transcript} </p>
+                    )}
+                </div>
+                <Link to="/protected/history">
+                    <button className="custom-button history-button">Navigate to History</button>
+                </Link>
+                {/* End of Upload Section */}
                     <Link to="/protected/history">
                         <button>Navigate to history</button>
                     </Link>
