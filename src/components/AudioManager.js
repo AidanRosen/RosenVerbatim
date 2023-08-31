@@ -5,7 +5,6 @@ import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
 import '../App.css';
 import './../AudioPlay.css';
-import { useAudioRecorder } from 'react-audio-voice-recorder';
 import logo from './../a.png'; // Tell webpack this JS file uses this image
 import { Link } from 'react-router-dom';
 import axios from "axios";
@@ -38,18 +37,7 @@ const AudioManager = () => {
     const [recordingName, setRecordingName] = useState();
 
     const [backgroundRemoval, setBackgroundRemoval] = useState(false); // Track background removal state
-    const [isProcessing, setIsProcessing] = useState(false); // Track whether processing is ongoing
 
-    const {
-        startRecording,
-        stopRecording,
-        togglePauseResume,
-        recordingBlob,
-        isRecording,
-        isPaused,
-        recordingTime,
-        mediaRecorder
-    } = useAudioRecorder();
 
     const isFirstRender = useRef(true);
 
@@ -249,13 +237,13 @@ const AudioManager = () => {
                             <input
                                 type="checkbox"
                                 onChange={() => {
-                                    if (!isProcessing) { // Allow toggling only if not processing
+                                    if (!processing) { // Allow toggling only if not processing
                                         setBackgroundRemoval(!backgroundRemoval);
                                         /* processBackgroundRemoval(); */ /* COMMENT OUT FOR NOW -- JS 8/20/23 */
                                     }
                                 }}
                             />
-                            <span className={`slider ${isProcessing ? 'processing' : ''}`}></span>
+                            <span className={`slider ${processing ? 'processing' : ''}`}></span>
                         </label>
                         <label className="toggle-label child">Background Noise Removal</label>
                     </div>
