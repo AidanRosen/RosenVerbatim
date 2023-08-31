@@ -234,47 +234,8 @@ const AudioManager = () => {
             </Backdrop>
 
             <div class="row">  {/* Body Container Div Start */}
-                <div class="column columnbackground" >  {/*  Body Child Div 1 Start - Left Container  */}
-                    <h3>STEP 1: SELECT OPTIONS</h3>
-                    <div className="toggle-switch togglestyle child">
-                        <label className="switch">
-                            <input type="checkbox" />
-                            <span className="slider"></span>
-                        </label>
-                        <label className="toggle-label child">Destuttering</label>
-                    </div>
 
-                    <div className="toggle-switch togglestyle child">
-                        <label className="switch">
-                            <input
-                                type="checkbox"
-                                onChange={() => {
-                                    if (!isProcessing) { // Allow toggling only if not processing
-                                        setBackgroundRemoval(!backgroundRemoval);
-                                        /* processBackgroundRemoval(); */ /* COMMENT OUT FOR NOW -- JS 8/20/23 */
-                                    }
-                                }}
-                            />
-                            <span className={`slider ${isProcessing ? 'processing' : ''}`}></span>
-                        </label>
-                        <label className="toggle-label child">Background Noise Removal</label>
-                    </div>
-
-                    <div className="toggle-switch togglestyle child">
-                        <label className="switch">
-                            {/* <input type="checkbox" onChange={() => startTranscription(setTranscription)} /> */}
-                            <span className="slider"></span>
-                        </label>
-                        <label className="toggle-label child">Transcription</label>
-                    </div>
-
-
-
-                </div>  {/*  Body Child Div 1 End - Left Container  */}
-
-
-                <div class="column columnbackground" > {/*  Body Child Div 2 Start - Left Container */}
-                    <h3>STEP 2: RECORD or UPLOAD</h3>
+                
 
 
 
@@ -302,21 +263,17 @@ const AudioManager = () => {
                     {/* End of new circle element */}
 
                     {/* Text input for changing the file name */}
+                    <div className="record-button center-vertically-left"> 
                     <input
                         type="text"
                         value={recordingName}
                         onChange={handleFileNameChange}
                         placeholder="Enter File Name"
-                    />
-
-                    {/* Display the current file name */}
-                    <p>Current File Name: {recordingName}</p>
-
-
-
-                    <div className='ORStyle'>
-                        OR
+                        className="file-input"
+                        />
+                        <p className="current-file-name">Current File Name: {recordingName}</p>
                     </div>
+
 
 
                     {/* Upload Section - Start */}
@@ -350,7 +307,6 @@ const AudioManager = () => {
                         <button>Navigate to history</button>
                     </Link>
 
-                </div>
                 <div>
 
 
