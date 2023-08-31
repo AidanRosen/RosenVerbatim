@@ -1,105 +1,129 @@
 .centerimage {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 40%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 40%;
+}
 
-  }
+.logo {
+  width: 40%;
+}
 
-  .logo {
-    /* display: block;
-    margin-left: auto;
-    margin-right: auto; */
-    width: 20%;
-
-  }
-
-
-  .logo > a > img {
-    width: 16rem;
-    max-width: 100%;
-    height: auto;
-    width: auto\9; /* ie8 */
-
-   min-width: 25%;
-
- }
-
+.logo > a > img {
+  width: 32rem; 
+  max-width: 100%;
+  height: auto;
+  width: auto\9; 
+  min-width: 25%;
+}
 
 .formContainer {
   margin-left: auto;
   margin-right: auto;
   width: 20rem;
-
 }
 
-
- .formfields {
+.formfields {
   margin-left: auto;
   margin-right: auto;
-  
   display: flex;
-  /* justify-content: center;
-  align-items: center; */
+  justify-content: center; 
+  align-items: center; 
   width: 100%;
-
-  padding-top: .5rem;
-  margin-left: 1rem;
-
- }
-
- .formfields > div > div > label {
-
-    font-size: .6rem;
-
-    padding-right: 1rem;
-    margin-bottom: -1rem;
-    color: #666666;
- }
-
- .formfields > div >  input {
-  display: block;
-  font-size: .7rem;
-  width: 18rem;
-  /* padding: 2px; */
-
-  padding-top: 2px;
-  padding-left: 2px;
-  color: black !important;
-
-
-
+  padding-top: 1.5rem;
+  margin-left: 3rem;
 }
 
+.formfields > div > label {
+  font-size: 0.9rem; 
+  padding-right: 1rem;
+  margin-bottom: -1rem;
+  color: #666666;
+}
+
+.formfields > div > input {
+  display: block;
+  font-size: 2.1rem; 
+  width: 54rem; 
+  padding-top: 4px;
+  padding-left: 4px;
+  color: black !important;
+}
 
 .continue_btn {
   display: block;
   background-color: #7600dd;
   color: white;
-  font-size: .6rem;
+  font-size: 1.8rem;
   border: none;
-  padding: 7px; 
-
-  margin-top: .6rem;
-  width: 18rem;
-
+  padding: 14px;
+  margin-top: 1.8rem;
+  width: 54rem; 
+  transition: background-color 0.3s;
 }
 
+.continue_btn:hover {
+  background-color: #5d00a8; 
+}
 
-.formfields > .loginlink  {
+.continue_btn:active {
+  background-color: #44007a; 
+}
 
-    color: #666666;
-    font-size: .6rem;
-    display: flex;
-  
-    margin-left: auto;
-    margin-right: auto;
-    justify-content: center;
+.formfields > .loginlink {
+  color: #666666;
+  font-size: 0.9rem; 
+  display: flex;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  align-items: center;
+  padding-right: 6rem;
+}
+
+@media screen and (max-width: 768px) {
+  .centerimage {
+    width: 60%;
+  }
+
+  .logo {
+    width: 60%; 
+  }
+
+  .logo > a > img {
+    width: 20rem; 
+  }
+
+  .formContainer {
+    width: 15rem;
+  }
+
+  .formfields {
+    flex-direction: column;
     align-items: center;
+    padding-top: 1rem;
+    margin-left: 0;
+  }
 
-    padding-right: 2rem;
-    
+  .formfields > div > label {
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
+  }
 
+  .formfields > div > input {
+    width: 100%;
+    font-size: 1.4rem;
+    padding: 8px; 
+  }
+
+  .continue_btn {
+    width: 100%;
+    margin-top: 1rem;
+    padding: 10px;
+  }
+
+  .formfields > .loginlink {
+    font-size: 0.8rem;
+    padding-right: 0;
+  }
 }
-
-

@@ -14,9 +14,12 @@
   
   /* Right folder list section */
   .folder-list {
-    flex: 1;
-    padding: 20px;
+    margin-left: 50px;
+    padding: 10px;
     background-color: #fff; /* Removed color */
+    align-items: center;
+    justify-content: center;
+    margin: auto;
   }
   
   /* Lists */
@@ -29,6 +32,8 @@
   /* Folder and File items */
   .folder-item,
   .file-item {
+    font-family: 'Inter', sans-serif;
+    font-weight: 550;
     display: flex;
     flex-direction: column; /* Change to column layout */
     align-items: center; /* Center horizontally */
@@ -46,7 +51,7 @@
   
   /* Selected items */
   .selected {
-    background-color: #5d00a8;
+    background-color: #623885;
     color: white;
   }
   
@@ -71,6 +76,7 @@
     border: none;
     cursor: pointer;
     margin-left: 10px;
+    font-size: 25px;
   }
   
   /* Responsive layout */
@@ -140,4 +146,24 @@
   
   .back-button button:hover {
     background-color: #5d00a8;
+  }
+
+  .play-pause-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    padding: 0;
+    width: 30px; /* Adjust the button size as needed */
+    height: 30px; /* Adjust the button size as needed */
+  }
+
+  .play-icon::before {
+    content: '\25B6'; /* Unicode play icon */
+    font-size: 21px; /* Adjust the icon size as needed */
+  }
+  
+  .play-icon.paused::before {
+    content: '\275A\275A'; /* Unicode pause icon */
+    font-size: 21px; /* Adjust the icon size as needed */
   }

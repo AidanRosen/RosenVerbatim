@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../a.png'; // Tell webpack this JS file uses this image
+import { Player } from '@lottiefiles/react-lottie-player';
 
 import './landingpage.css';
  
@@ -15,8 +16,16 @@ const Home = () => {
             </div>
             {/* Logo End */}
         
+            <div className="lottie-container">
+                <Player
+                    autoplay
+                    loop
+                    src={require('../Pulse2.json')}
+                    className="lottie-animation" 
+                />
+            </div>
 
-            <div class="row buttonrow">  {/* Body Container Div Start */}      
+            <div class="row buttonrow">  {}      
 
                 <div class="faketab">
                     <div className="faketableft">

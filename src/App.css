@@ -354,3 +354,26 @@ div.RecordButtonNew.record_btn:hover span {
   min-width: 60%;
   padding-top: 2rem;
 }
+
+.mainPageButton {
+  background-color: #7600DD;
+  border: none;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 8px;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.mainPageButton:hover {
+  background-color: #6341b1; /* Shade change when hovering */
+}
+
+.mainPageButton:active {
+  background-color: #4c308e; /* Shade change when clicked */
+}

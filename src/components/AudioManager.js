@@ -4,7 +4,7 @@ import { destutter } from '../utilities/destutter';
 import RecorderJS from 'recorder-js';
 import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
-import '../App.css';
+// import '../App.css';
 import './../AudioPlay.css';
 import logo from './../a.png'; // Tell webpack this JS file uses this image
 import { Link } from 'react-router-dom';
@@ -36,7 +36,7 @@ const AudioManager = () => {
     const [isDestutter, setIsDestutter] = useState(false);
     const { user, isLoading } = useAuth();
     const [enhancedFile, setEnhancedFile] = useState();
-    const [recordingName, setRecordingName] = useState();
+    const [recordingName, setRecordingName] = useState('');
 
     const [backgroundRemoval, setBackgroundRemoval] = useState(false); // Track background removal state
 
@@ -113,6 +113,8 @@ const AudioManager = () => {
 
         resetAnimation();
     };
+
+    
 
     const processFile = async () => {
         setProcessing(true);
@@ -263,27 +265,35 @@ const AudioManager = () => {
                             {/* End of additional circle */}
                             <div
                                 className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
-                                onClick={() => {
-                                    recording ? stopRecord() : startRecord();
-                                }}
                             > {/* Sub Div 1 - Start */}
-                                <button className={`record-button ${recording ? 'disabled' : ''}`}> {/* Recording Button - Start */}
+                                <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`}
+                                    onClick={() => {
+                                        if (recordingName === null || recordingName.trim() === '') {
+                                            // You can choose to display an error message or take any other action here
+                                            return;
+                                        }
+                                        recording ? stopRecord() : startRecord();
+                                    }}>
+                                    {/* Recording Button - Start */}
                                     <div className="button-content">
                                         {recording ? 'Recording...' : 'Record'}
+                                        <br></br>
+                                        <input
+                                            type="text"
+                                            value={recordingName}
+                                            onChange={handleFileNameChange}
+                                            placeholder="Enter File Name"
+                                            className="file-input"
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                            }}
+                                        />
                                     </div>
                                 </button>  {/* Recording Button - End */}
                             </div> {/* Sub Div 1 - End */}
                         </div> {/* Outer Circle - End */}
                     </div> {/* Parent New Cirlce Element End */}
                     {/* End of new circle element */}
-
-                    {/* Text input for changing the file name */}
-                    <input
-                        type="text"
-                        value={recordingName}
-                        onChange={handleFileNameChange}
-                        placeholder="Enter File Name"
-                    />
 
                     {/* Display the current file name */}
                     <p>Current File Name: {recordingName}</p>
@@ -296,45 +306,65 @@ const AudioManager = () => {
 
 
                     {/* Upload Section - Start */}
-                    <div>{/*  Upload Div - Start */}
+                    <div>
+                        <input
+                            disabled={recording}
+                            type="file"
+                            onChange={addFile}
+                            className="mainPageButton" // Apply mainPageButton class
+                        />
 
-                        <input disabled={recording} type="file" onChange={addFile} />
-
-                        <button onClick={handleClick}>
+                        <button
+                            onClick={handleClick}
+                            className={`mainPageButton ${buttonName === 'Play' ? 'play-button' : 'pause-button'}`}
+                        >
                             {buttonName}
                         </button>
 
                         {audio != null && (
-                            <button disabled={processing} onClick={processFile}>
+                            <button
+                                disabled={processing}
+                                onClick={processFile}
+                                className="mainPageButton process-button"
+                            >
                                 Process
                             </button>
-
-
                         )}
                         {enhanced != null && (
                             <div>
-                                <button onClick={playEnhanced}>Play Enhanced Audio</button>
-                                <button onClick={upload}>Backup</button>
+                                <button
+                                    onClick={playEnhanced}
+                                    className="mainPageButton play-processed-button"
+                                >
+                                    Play Enhanced Audio
+                                </button>
+                                <button
+                                    onClick={upload}
+                                    className="mainPageButton upload-button"
+                                >
+                                    Backup
+                                </button>
                             </div>
-                        )}{transcript != null && (
+                        )}
+                        {transcript != null && (
                             <p className="transcript"> Transcript: {transcript} </p>
                         )}
-
-
-                    </div>{/*  Upload Div - End */}
+                    </div>
                     <Link to="/protected/history">
-                        <button>Navigate to history</button>
+                        <button className="mainPageButton history-button">Navigate to History</button>
                     </Link>
+                    {/* End of Upload Section */}
 
-                </div>
-                <div>
+                    <div>
 
+
+                    </div>
 
                 </div>
 
             </div>
-
         </div>
+
     );
 };
 
