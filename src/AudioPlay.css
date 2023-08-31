@@ -113,13 +113,6 @@ h3 {
 
 }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
 .child {
 
   font-size: 3rem;
@@ -147,12 +140,6 @@ h3 {
   height: 300px; /* Should be removed. Only for demonstration */
 }
 
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
 
 
 .child {
@@ -169,14 +156,11 @@ h3 {
 }
 
 
-
-
-
 /* Clear floats after the columns */
 .row:after {
-  content: "";
-  display: table;
-  clear: both;
+  /* content: "";
+  /* display: table; */
+  /* clear: both; */ 
   
   padding-bottom: 80px;
   
