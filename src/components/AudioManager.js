@@ -100,7 +100,7 @@ const AudioManager = () => {
             setRecordingName(recordingName.substring(0, recordingName.indexOf(".wav")));
         }
         console.log(recordingName)
-        const audioFile = new File([audioBuffer], recordingName, { type: 'audio/wav' });
+        const audioFile = new File([audioBuffer], recordingName + ".wav", { type: 'audio/wav' });
         console.log(audioFile.name);
         setAudio(URL.createObjectURL(audioFile));
         setFile(audioFile);
