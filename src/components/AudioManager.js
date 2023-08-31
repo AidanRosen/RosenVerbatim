@@ -29,6 +29,7 @@ const AudioManager = () => {
     const [enhanced, setEnhanced] = useState();
     const [stream, setStream] = useState();
     const [recording, setRecording] = useState(false);
+    const [text, setText] = useState("");
     const [recorder, setRecorder] = useState();
     const [browserSampleRate, setBrowserSampleRate] = useState(48000);
     const [processing, setProcessing] = useState(false);
@@ -118,6 +119,7 @@ const AudioManager = () => {
 
     const processFile = async () => {
         setProcessing(true);
+        setText("Processing...")
         console.log(file);
         let response = await process(file);
         setTranscript(response.headers.transcript);
@@ -167,6 +169,7 @@ const AudioManager = () => {
 
     const upload = async () => {
         setProcessing(true);
+        setText("Backing up...")
         const formDataOriginal = new FormData();
         const formDataEnhanced = new FormData();
         const timestamp = serverTimestamp();
@@ -233,7 +236,7 @@ const AudioManager = () => {
             // onClick={handleClose}
             >
                 <CircularProgress color="secondary" size="8rem" />
-                <h2> Processing...</h2>
+                <h2> {text}</h2>
             </Backdrop>
 
             <div class="row">  {/* Body Container Div Start */}

@@ -132,19 +132,30 @@ const HistoryTab = () => {
     if (audioPlaying === file.id) {
       // If the audio is already playing, stop it
       console.log("setting audio playing to null")
-      setAudioPlaying(null);
-      audio.pause();
-    } else {
-      // Otherwise, play the audio
-      if (!audio.paused) {
+      if (audioPlaying && audio && !audio.paused && audio.currentTime > 0 && !audio.ended 
+        && audio.readyState) {
         audio.pause();
-        setAudioPlaying(null);
       }
+      setAudioPlaying(null)
+    } else {
+      // // Otherwise, play the audio
+      // if (audioPlaying && audio && !audio.paused && audio.currentTime > 0 && !audio.ended 
+      //   && audio.readyState) {
+      //     console.log("setting null in else")
+      //   audio.pause();
+      //   setAudioPlaying(null);
+      // }
       setAudioPlaying(file.id);
       const audioObj = new Audio(file.url); // Replace 'url' with the actual audio file URL
-      setAudio(audioObj)
-      audioObj.play();
-      audioObj.onended = () => setAudioPlaying(null); // Stop when audio finishes
+      audioObj.src = file.url;
+      audioObj.load();
+      setAudio(audioObj);
+      
+      audioObj.addEventListener('canplaythrough', () => {
+        console.log(audioObj)
+        audioObj.play();
+        audioObj.onended = () => setAudioPlaying(null);
+      }); // Stop when audio finishes
     }
   };
 
@@ -180,14 +191,14 @@ const HistoryTab = () => {
           const fileName = truncated.substring(0, truncated.indexOf("?temp_url"));
           fileNameToUrl[fileName] = url;
         }
-        console.log(fileNameToUrlMap)
+        console.log(fileNameToUrl)
         console.log(names)
         const files = names.map((name) => {
           return {
             id: documentIds[name],
             folderId: null,
             name: name,
-            url: fileNameToUrlMap[name]
+            url: fileNameToUrl[name]
           }
         });
         setTempUrls(filteredUrls);
