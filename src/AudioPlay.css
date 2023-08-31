@@ -8,8 +8,8 @@
 .record-button {
   position: relative;
   
-  width: 10.5rem;
-  height: 10.5rem;
+  width: 25rem;
+  height: 25rem;
   
   background-color: #d4a5ff;
   border-radius: 50%;
@@ -19,7 +19,7 @@
   cursor: pointer;
   transition: background-color 0.3s;
   margin-bottom: -168px; 
-  margin-left: 45rem;
+  margin-left: 38rem;
 }
 
 .record-button-inner {
@@ -294,13 +294,19 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-left: 56rem;
+  margin-left: 65rem;
 }
 
 .file-input {
   /* Add any desired styles for the input here */
 }
 
+.file-input:focus {
+  outline: none; /* Remove outline when input is focused */
+}
+
 .current-file-name {
   /* Add any desired styles for the current file name display here */
 }
+
+
