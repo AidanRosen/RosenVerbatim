@@ -13,6 +13,7 @@ const HistoryTab = () => {
   const [tempUrls, setTempUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isLoading } = useAuth();
+  const [fileNameToUrlMap, setFileNameToUrlMap] = useState({});
   const [folders, setFolders] = useState([
     { id: 1, name: 'Folder 1' },
     { id: 2, name: 'Folder 2' },
@@ -77,8 +78,6 @@ const HistoryTab = () => {
     ];
 
     console.log(itemsToDelete);
-
-
 
     // Show a confirmation prompt
     const confirmationMessage = `Are you sure you want to delete the following items?\n\n${itemsToDelete.join('\n')}`;
@@ -164,8 +163,16 @@ const HistoryTab = () => {
     const itemsToExport = selectedItemsForExport.map((itemId) => {
       const folder = folders.find((f) => f.id === itemId);
       const file = files.find((f) => f.id === itemId);
-      return folder ? `Folder: ${folder.name}` : file ? `File: ${file.name}` : null;
+      return folder ? `Folder: ${folder.name}` : file ? `${file.name}` : null;
     });
+
+    itemsToExport.forEach((item) => {
+      console.log(item);
+      const link = document.createElement('a');
+      link.href = fileNameToUrlMap[item];
+      link.click();
+    });
+
 
     alert(`Exporting the following items:\n\n${itemsToExport.join('\n')}`);
   };
@@ -208,13 +215,13 @@ const HistoryTab = () => {
         }
 
         const names = Object.keys(documentIds);
-        const fileNameToUrlMap = {};
+        const fileNameToUrl = {};
         console.log(filteredUrls)
         for (const url of filteredUrls) {
           console.log(url);
           const truncated = url.replace(prefix + user.uid + "/", "")
           const fileName = truncated.substring(0, truncated.indexOf("?temp_url"));
-          fileNameToUrlMap[fileName] = url;
+          fileNameToUrl[fileName] = url;
         }
         console.log(fileNameToUrlMap)
         console.log(names)
@@ -228,6 +235,7 @@ const HistoryTab = () => {
         });
         setTempUrls(filteredUrls);
         setFiles(files);
+        setFileNameToUrlMap(fileNameToUrl);
         console.log(files);
         setLoading(false);
       } catch (error) {
