@@ -5,7 +5,6 @@ import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
 import '../App.css';
 import './../AudioPlay.css';
-import { useAudioRecorder } from 'react-audio-voice-recorder';
 import logo from './../a.png'; // Tell webpack this JS file uses this image
 import { Link } from 'react-router-dom';
 import axios from "axios";
@@ -38,18 +37,7 @@ const AudioManager = () => {
     const [recordingName, setRecordingName] = useState();
 
     const [backgroundRemoval, setBackgroundRemoval] = useState(false); // Track background removal state
-    const [isProcessing, setIsProcessing] = useState(false); // Track whether processing is ongoing
 
-    const {
-        startRecording,
-        stopRecording,
-        togglePauseResume,
-        recordingBlob,
-        isRecording,
-        isPaused,
-        recordingTime,
-        mediaRecorder
-    } = useAudioRecorder();
 
     const isFirstRender = useRef(true);
 
@@ -234,11 +222,6 @@ const AudioManager = () => {
             </Backdrop>
 
             <div class="row">  {/* Body Container Div Start */}
-
-                
-
-
-
                     {/* New circle element */}
                     <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
 

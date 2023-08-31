@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './History.css';
 import axios from 'axios';
 import { useAuth } from '../hooks/auth';
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { collection, query, where, getDocs, deleteDoc } from "firebase/firestore";
 import { db } from "../lib/firebase";
 import { useNavigate } from 'react-router-dom'
 import LoadingPage from '../components/loading/loading';
@@ -13,6 +13,7 @@ const HistoryTab = () => {
   const [tempUrls, setTempUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isLoading } = useAuth();
+  const [fileNameToUrlMap, setFileNameToUrlMap] = useState({});
   const [folders, setFolders] = useState([
     { id: 1, name: 'Folder 1' },
     { id: 2, name: 'Folder 2' },
@@ -57,7 +58,7 @@ const HistoryTab = () => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = async () => {
     // Check if any folders or files are selected
     if (selectedFolders.length === 0 && selectedFiles.length === 0) {
       alert('No items selected for deletion.');
@@ -68,17 +69,56 @@ const HistoryTab = () => {
     const itemsToDelete = [
       ...selectedFolders.map((folderId) => {
         const folder = folders.find((folder) => folder.id === folderId);
-        return folder ? `Folder: ${folder.name}` : null;
+        return folder ? `${folder.name}` : null;
       }),
       ...selectedFiles.map((fileId) => {
         const file = files.find((file) => file.id === fileId);
-        return file ? `File: ${file.name}` : null;
+        return file ? `${file.name}` : null;
       }),
     ];
+
+    console.log(itemsToDelete);
 
     // Show a confirmation prompt
     const confirmationMessage = `Are you sure you want to delete the following items?\n\n${itemsToDelete.join('\n')}`;
     if (window.confirm(confirmationMessage)) {
+      for(const item of itemsToDelete) {
+        try {
+          const unProcesesd = item.replace("_processed", "");
+          // Send a DELETE request to your Express server
+          await fetch(`https://api-sl2ugsqq7a-uc.a.run.app/deleteFile/${user.uid}/${item}`, {
+            method: 'DELETE',
+          });
+
+          await fetch(`https://api-sl2ugsqq7a-uc.a.run.app/deleteFile/${user.uid}/${unProcesesd}`, {
+            method: 'DELETE',
+          });
+
+          const recordingsRef = collection(db, "recordings");
+          const q = query(recordingsRef, where("uid", "==", user.uid), where("enhancedFileName", "==", item));
+          const querySnapshot = await getDocs(q);
+
+          if (!querySnapshot.empty) {
+            querySnapshot.forEach(async (doc) => {
+              console.log(doc.data())
+              await deleteDoc(doc.ref);
+            })
+          }
+
+          // Remove the item from the state
+          if (item.type === 'folder') {
+            setFolders((prevFolders) =>
+              prevFolders.filter((folder) => folder.id !== item.id)
+            );
+          } else {
+            setFiles((prevFiles) =>
+              prevFiles.filter((file) => file.id !== item.id)
+            );
+          }
+        } catch (e) {
+          console.error(`Error deleting file ${item}`, e);
+        }
+      }
       // Remove selected folders and files from the state
       setFolders((prevFolders) =>
         prevFolders.filter((folder) => !selectedFolders.includes(folder.id))
@@ -123,8 +163,16 @@ const HistoryTab = () => {
     const itemsToExport = selectedItemsForExport.map((itemId) => {
       const folder = folders.find((f) => f.id === itemId);
       const file = files.find((f) => f.id === itemId);
-      return folder ? `Folder: ${folder.name}` : file ? `File: ${file.name}` : null;
+      return folder ? `Folder: ${folder.name}` : file ? `${file.name}` : null;
     });
+
+    itemsToExport.forEach((item) => {
+      console.log(item);
+      const link = document.createElement('a');
+      link.href = fileNameToUrlMap[item];
+      link.click();
+    });
+
 
     alert(`Exporting the following items:\n\n${itemsToExport.join('\n')}`);
   };
@@ -167,13 +215,13 @@ const HistoryTab = () => {
         }
 
         const names = Object.keys(documentIds);
-        const fileNameToUrlMap = {};
+        const fileNameToUrl = {};
         console.log(filteredUrls)
         for (const url of filteredUrls) {
           console.log(url);
           const truncated = url.replace(prefix + user.uid + "/", "")
           const fileName = truncated.substring(0, truncated.indexOf("?temp_url"));
-          fileNameToUrlMap[fileName] = url;
+          fileNameToUrl[fileName] = url;
         }
         console.log(fileNameToUrlMap)
         console.log(names)
@@ -187,6 +235,8 @@ const HistoryTab = () => {
         });
         setTempUrls(filteredUrls);
         setFiles(files);
+        setFileNameToUrlMap(fileNameToUrl);
+        console.log(files);
         setLoading(false);
       } catch (error) {
         console.error('Error fetching temp URLs:', error);
@@ -198,6 +248,7 @@ const HistoryTab = () => {
     return () => clearInterval(intervalId);
   }, []);
   console.log(loading);
+
   if (loading) {
     return (
       <div><LoadingPage/></div>
