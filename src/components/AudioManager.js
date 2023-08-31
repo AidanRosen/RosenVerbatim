@@ -3,7 +3,6 @@ import { process } from '../utilities/process';
 import RecorderJS from 'recorder-js';
 import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
-import '../App.css';
 import './../AudioPlay.css';
 import logo from './../a.png'; // Tell webpack this JS file uses this image
 import { Link } from 'react-router-dom';

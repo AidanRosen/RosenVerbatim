@@ -13,6 +13,7 @@ const HistoryTab = () => {
   const [tempUrls, setTempUrls] = useState([]);
   const [loading, setLoading] = useState(true);
   const { user, isLoading } = useAuth();
+  const [audio, setAudio] = useState(null);
   const [fileNameToUrlMap, setFileNameToUrlMap] = useState({});
   const [folders, setFolders] = useState([
     { id: 1, name: 'Folder 1' },
@@ -179,15 +180,25 @@ const HistoryTab = () => {
 
   const handlePlayAudio = (file) => {
     console.log(file)
+    console.log(audioPlaying);
+    console.log(file.id);
+    console.log(audio);
     if (audioPlaying === file.id) {
       // If the audio is already playing, stop it
+      console.log("setting audio playing to null")
       setAudioPlaying(null);
+      audio.pause();
     } else {
       // Otherwise, play the audio
+      if (!audio.paused) {
+        audio.pause();
+        setAudioPlaying(null);
+      }
       setAudioPlaying(file.id);
-      const audio = new Audio(file.url); // Replace 'url' with the actual audio file URL
-      audio.play();
-      audio.onended = () => setAudioPlaying(null); // Stop when audio finishes
+      const audioObj = new Audio(file.url); // Replace 'url' with the actual audio file URL
+      setAudio(audioObj)
+      audioObj.play();
+      audioObj.onended = () => setAudioPlaying(null); // Stop when audio finishes
     }
   };
 
@@ -271,11 +282,11 @@ const HistoryTab = () => {
                 onClick={() => handleSelectFile(file.id)}
               >
                 <div className="file-name">{file.name}</div>
-                <button onClick={(e) => {
+                <button className="play-pause-button" onClick={(e) => {
                   e.stopPropagation();
                   handlePlayAudio(file)
                 }}>
-                  {audioPlaying === file.id ? 'Stop' : 'Play'}
+                  <span className={`play-icon ${audioPlaying === file.id ? 'paused' : ''}`} />
                 </button>
               </div>
               
