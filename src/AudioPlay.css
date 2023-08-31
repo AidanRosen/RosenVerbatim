@@ -48,9 +48,6 @@
   
 }
 
-
-
-
 .song {
 	/* padding-top: 30px; */
   padding-top: 3rem;
@@ -277,8 +274,6 @@ h3 {
   display: none;
 }
 
-
-
 .smallerimage > img {
 
   width: 24rem;
@@ -309,4 +304,7 @@ h3 {
   /* Add any desired styles for the current file name display here */
 }
 
-
+.record-button.disabled {
+  background-color: rgba(212, 165, 255, 0.5); /* Adjust the alpha (0.5) to control transparency */
+  cursor: not-allowed; /* Change the cursor style to indicate it's not clickable */
+}

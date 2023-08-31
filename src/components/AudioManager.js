@@ -231,13 +231,29 @@ const AudioManager = () => {
                             {/* End of additional circle */}
                             <div
                                 className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
-                                onClick={() => {
-                                    recording ? stopRecord() : startRecord();
-                                }}
                             > {/* Sub Div 1 - Start */}
-                                <button className={`record-button ${recording ? 'disabled' : ''}`}> {/* Recording Button - Start */}
+                                <button className={`record-button ${recording || recordingName.trim() === '' ? 'disabled' : ''}`} 
+                                onClick={() => {
+                                    if (recordingName.trim() === '') {
+                                        // You can choose to display an error message or take any other action here
+                                        return;
+                                    }
+                                    recording ? stopRecord() : startRecord();
+                                }}> {/* Recording Button - Start */}
                                     <div className="button-content">
                                         {recording ? 'Recording...' : 'Record'}
+                                        <br></br>
+                                        <input
+                                            type="text"
+                                            value={recordingName}
+                                            onChange={handleFileNameChange}
+                                            placeholder="Enter File Name"
+                                            className="file-input"
+                                            onClick={(event) => {
+                                                event.stopPropagation();
+                                            }}
+                                            />
+                                            <p className="current-file-name">Current File Name: {recordingName}</p>
                                     </div>
                                 </button>  {/* Recording Button - End */}
                             </div> {/* Sub Div 1 - End */}
@@ -247,14 +263,7 @@ const AudioManager = () => {
 
                     {/* Text input for changing the file name */}
                     <div className="center-vertically-left"> 
-                    <input
-                        type="text"
-                        value={recordingName}
-                        onChange={handleFileNameChange}
-                        placeholder="Enter File Name"
-                        className="file-input"
-                        />
-                        <p className="current-file-name">Current File Name: {recordingName}</p>
+
                     </div>
 
 
