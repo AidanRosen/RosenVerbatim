@@ -8,8 +8,8 @@
 .record-button {
   position: relative;
   
-  width: 25rem;
-  height: 25rem;
+  width: 40rem;
+  height: 40rem;
   
   background-color: #d4a5ff;
   border-radius: 50%;
@@ -18,8 +18,13 @@
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s;
-  margin-bottom: -168px; 
-  margin-left: 38rem;
+  /* margin-bottom: -168px; 
+  margin-left: 38rem; */
+  margin: auto;
+}
+
+.inner-circle {
+  padding-top: 40px;
 }
 
 .record-button-inner {
@@ -307,4 +312,11 @@ h3 {
 .record-button.disabled {
   background-color: rgba(212, 165, 255, 0.5); /* Adjust the alpha (0.5) to control transparency */
   cursor: not-allowed; /* Change the cursor style to indicate it's not clickable */
+}
+
+.centerimage.smallerimage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
 }

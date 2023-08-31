@@ -34,7 +34,7 @@ const AudioManager = () => {
     const [transcript, setTranscript] = useState();
     const { user, isLoading } = useAuth();
     const [enhancedFile, setEnhancedFile] = useState();
-    const [recordingName, setRecordingName] = useState();
+    const [recordingName, setRecordingName] = useState('');
 
     const [backgroundRemoval, setBackgroundRemoval] = useState(false); // Track background removal state
 
@@ -232,9 +232,9 @@ const AudioManager = () => {
                             <div
                                 className={`inner-circle ${recording ? 'recording' : ''} ${recording ? 'disabled' : ''}`}
                             > {/* Sub Div 1 - Start */}
-                                <button className={`record-button ${recording || recordingName.trim() === '' ? 'disabled' : ''}`} 
+                                <button className={`record-button ${recording || recordingName === null || recordingName.trim() === '' ? 'disabled' : ''}`} 
                                 onClick={() => {
-                                    if (recordingName.trim() === '') {
+                                    if (recordingName === null || recordingName.trim() === '') {
                                         // You can choose to display an error message or take any other action here
                                         return;
                                     }
