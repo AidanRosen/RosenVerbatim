@@ -1,5 +1,6 @@
 from fastapi import FastAPI, File, UploadFile
 from utilities import post_process, load_audio
+from destutter import detect_stutter
 import io
 import whisper
 import torchaudio
@@ -11,6 +12,7 @@ app = FastAPI()
 
 origins = [
     "http://localhost:3000",
+    "https://verbatim.site"
 ]
 
 app.add_middleware(
@@ -28,7 +30,7 @@ app.add_middleware(
 async def startup_event():
     global deepFilterNet, df_state, whisperModel
     deepFilterNet, df_state, _ = init_df()
-    whisperModel = whisper.load_model("small.en")
+    whisperModel = whisper.load_model("medium.en")
 
 @app.post("/process")
 async def process(file:UploadFile = File(...)):
@@ -45,5 +47,15 @@ async def process(file:UploadFile = File(...)):
     print(result["text"])
     header = {"transcript": result["text"].strip()}
     return Response(content=buffer_.getvalue(), headers=header, media_type="audio/wav")
+
+
+@app.post("/destutter")
+async def destutter(file:UploadFile = File(...)):
+    p_sev, r_sev, o_sev, indices, buffer_ = detect_stutter(file.file)
+    print('Prolongation % : '+str(p_sev))
+    print('Repetition % : '+str(r_sev))
+    print('Overall stutter % : '+str(o_sev))
+    print(indices)
+    return Response(content=buffer_.getvalue(), media_type="audio/wav")
 
 

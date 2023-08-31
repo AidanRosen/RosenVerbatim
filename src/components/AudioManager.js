@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { process } from '../utilities/process';
+import { destutter } from '../utilities/destutter';
 import RecorderJS from 'recorder-js';
 import { exportBuffer } from '../utilities/preprocess';
 import { getAudioStream } from '../utilities/permissions';
@@ -32,6 +33,7 @@ const AudioManager = () => {
     const [browserSampleRate, setBrowserSampleRate] = useState(48000);
     const [processing, setProcessing] = useState(false);
     const [transcript, setTranscript] = useState();
+    const [isDestutter, setIsDestutter] = useState(false);
     const { user, isLoading } = useAuth();
     const [enhancedFile, setEnhancedFile] = useState();
     const [recordingName, setRecordingName] = useState('');
@@ -117,17 +119,25 @@ const AudioManager = () => {
     const processFile = async () => {
         setProcessing(true);
         console.log(file);
-        const response = await process(file);
-        const wav = new Blob([response.data], { type: 'audio/wav' });
-        const url = window.URL.createObjectURL(wav);
-        const result = new Audio(url);
-        const name = file.name.substring(0, file.name.lastIndexOf(".")) + "_processed";
-        const extension = file.name.substring(file.name.lastIndexOf("."), file.name.length);
-        const efName = name + extension;
-        const ef = new File([wav], efName, { type: 'audio/wav' });
+        let response = await process(file);
+        setTranscript(response.headers.transcript);
+        let wav = new Blob([response.data], { type: 'audio/wav' });
+        let url = window.URL.createObjectURL(wav);
+        let result = new Audio(url);
+        let name = file.name.substring(0, file.name.lastIndexOf(".")) + "_processed";
+        let extension = file.name.substring(file.name.lastIndexOf("."), file.name.length);
+        let efName = name + extension;
+        let ef = new File([wav], efName, { type: 'audio/wav' });
+        if (isDestutter) {
+            console.log("this is destutter: " + isDestutter);
+            response = await destutter(ef);
+            wav = new Blob([response.data], { type: 'audio/wav' });
+            url = window.URL.createObjectURL(wav);
+            result = new Audio(url);
+            ef = new File([wav], efName, { type: 'audio/wav' });
+        }
         setEnhancedFile(ef);
         setEnhanced(result);
-        setTranscript(response.headers.transcript);
         setProcessing(false);
     };
 
@@ -135,11 +145,12 @@ const AudioManager = () => {
         enhanced.play();
     };
 
-    const addFile = (e) => {
+    const addFile = async (e) => {
         if (e.target.files[0]) {
             console.log(e.target.files[0]);
             setFile(e.target.files[0]);
-            setAudio(URL.createObjectURL(e.target.files[0]));
+            const url = URL.createObjectURL(e.target.files[0]);
+            setAudio(url);
         }
     };
 
@@ -224,6 +235,27 @@ const AudioManager = () => {
             </Backdrop>
 
             <div class="row">  {/* Body Container Div Start */}
+                <div class="column columnbackground" >  {/*  Body Child Div 1 Start - Left Container  */}
+                    <h3>STEP 1: SELECT OPTIONS</h3>
+                    <div className="toggle-switch togglestyle child">
+                        <label className="switch">
+                            <input type="checkbox" onChange={() => { setIsDestutter(!isDestutter); console.log(isDestutter) }} />
+                            <span className="slider"></span>
+                        </label>
+                        <label className="toggle-label child">Destuttering</label>
+                    </div>
+
+
+
+
+                </div>  {/*  Body Child Div 1 End - Left Container  */}
+
+
+                <div class="column columnbackground" > {/*  Body Child Div 2 Start - Left Container */}
+                    <h3>STEP 2: RECORD or UPLOAD</h3>
+
+
+
                     {/* New circle element */}
                     <div className={`record-circle ${recording ? 'dancing' : ''}`}>  {/* Parent New Cirlce Element Start */}
 
