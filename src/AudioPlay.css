@@ -312,6 +312,14 @@ h3 {
 .record-button.disabled {
   background-color: rgba(212, 165, 255, 0.5); /* Adjust the alpha (0.5) to control transparency */
   cursor: not-allowed; /* Change the cursor style to indicate it's not clickable */
+}.custom-button {
+  background-color: #7600DD;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 
 .centerimage.smallerimage {
@@ -320,3 +328,27 @@ h3 {
   justify-content: center;
   margin: auto;
 }
+.play-button {
+  background-color: #D1B4FF;
+}
+
+.pause-button {
+  background-color: #E8C5FF;
+}
+
+.process-button {
+  background-color: #D1B4FF;
+}
+
+.play-processed-button {
+  background-color: #7600DD;
+}
+
+.upload-button {
+  background-color: #D1B4FF;
+}
+
+.history-button {
+  background-color: #E8C5FF;
+}
+
