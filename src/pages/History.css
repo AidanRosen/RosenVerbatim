@@ -14,9 +14,12 @@
   
   /* Right folder list section */
   .folder-list {
-    flex: 1;
-    padding: 20px;
+    margin-left: 50px;
+    padding: 10px;
     background-color: #fff; /* Removed color */
+    align-items: center;
+    justify-content: center;
+    margin: auto;
   }
   
   /* Lists */
@@ -48,7 +51,7 @@
   
   /* Selected items */
   .selected {
-    background-color: #5d00a8;
+    background-color: #623885;
     color: white;
   }
   
@@ -73,6 +76,7 @@
     border: none;
     cursor: pointer;
     margin-left: 10px;
+    font-size: 25px;
   }
   
   /* Responsive layout */
