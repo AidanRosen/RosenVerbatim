@@ -143,11 +143,12 @@ const AudioManager = () => {
         enhanced.play();
     };
 
-    const addFile = (e) => {
+    const addFile = async (e) => {
         if (e.target.files[0]) {
             console.log(e.target.files[0]);
             setFile(e.target.files[0]);
-            setAudio(URL.createObjectURL(e.target.files[0]));
+            const url = URL.createObjectURL(e.target.files[0]);
+            setAudio(url);
         }
     };
 
@@ -236,35 +237,12 @@ const AudioManager = () => {
                     <h3>STEP 1: SELECT OPTIONS</h3>
                     <div className="toggle-switch togglestyle child">
                         <label className="switch">
-                            <input type="checkbox"  onChange={() => {setIsDestutter(!isDestutter); console.log(isDestutter)}}/>
+                            <input type="checkbox" onChange={() => { setIsDestutter(!isDestutter); console.log(isDestutter) }} />
                             <span className="slider"></span>
                         </label>
                         <label className="toggle-label child">Destuttering</label>
                     </div>
 
-                    <div className="toggle-switch togglestyle child">
-                        <label className="switch">
-                            <input
-                                type="checkbox"
-                                onChange={() => {
-                                    if (!processing) { // Allow toggling only if not processing
-                                        setBackgroundRemoval(!backgroundRemoval);
-                                        /* processBackgroundRemoval(); */ /* COMMENT OUT FOR NOW -- JS 8/20/23 */
-                                    }
-                                }}
-                            />
-                            <span className={`slider ${processing ? 'processing' : ''}`}></span>
-                        </label>
-                        <label className="toggle-label child">Background Noise Removal</label>
-                    </div>
-
-                    <div className="toggle-switch togglestyle child">
-                        <label className="switch">
-                            {/* <input type="checkbox" onChange={() => startTranscription(setTranscription)} /> */}
-                            <span className="slider"></span>
-                        </label>
-                        <label className="toggle-label child">Transcription</label>
-                    </div>
 
 
 
